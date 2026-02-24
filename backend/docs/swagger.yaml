@@ -1,0 +1,2662 @@
+basePath: /api/v1
+definitions:
+  github_com_meransoft_commerce-backend_internal_models.Admin:
+    properties:
+      created_at:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      role:
+        $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.AdminRole'
+      username:
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.AdminResponse:
+    properties:
+      created_at:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      role:
+        $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.AdminRole'
+      username:
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.AdminRole:
+    enum:
+    - superadmin
+    - admin
+    - manager
+    type: string
+    x-enum-varnames:
+    - RoleSuperAdmin
+    - RoleAdmin
+    - RoleManager
+  github_com_meransoft_commerce-backend_internal_models.ApiError:
+    properties:
+      code:
+        type: string
+      details:
+        additionalProperties:
+          type: string
+        type: object
+      message:
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.ApiResponse:
+    properties:
+      data: {}
+      error:
+        $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiError'
+      message:
+        type: string
+      pagination:
+        $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Pagination'
+      success:
+        type: boolean
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.Banner:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      is_active:
+        type: boolean
+      link_type:
+        type: string
+      link_value:
+        type: string
+      sort_order:
+        type: integer
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.BannerResponse:
+    properties:
+      id:
+        type: integer
+      image_url:
+        type: string
+      link_type:
+        type: string
+      link_value:
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.Brand:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      logo_url:
+        type: string
+      name:
+        type: string
+      sort_order:
+        type: integer
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.BrandResponse:
+    properties:
+      id:
+        type: integer
+      logo_url:
+        type: string
+      name:
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.CartItemRequest:
+    properties:
+      product_id:
+        type: integer
+      quantity:
+        minimum: 1
+        type: integer
+    required:
+    - product_id
+    - quantity
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.Category:
+    properties:
+      created_at:
+        type: string
+      has_subcategories:
+        type: boolean
+      id:
+        type: integer
+      image_url:
+        type: string
+      is_active:
+        type: boolean
+      name_ru:
+        type: string
+      name_tm:
+        type: string
+      sort_order:
+        type: integer
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.CategoryResponse:
+    properties:
+      has_subcategories:
+        type: boolean
+      id:
+        type: integer
+      image_url:
+        type: string
+      name:
+        type: string
+      subcategories:
+        items:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.SubCategoryResponse'
+        type: array
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.CreateAdminRequest:
+    properties:
+      full_name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.AdminRole'
+        enum:
+        - superadmin
+        - admin
+        - manager
+      username:
+        maxLength: 100
+        minLength: 3
+        type: string
+    required:
+    - password
+    - role
+    - username
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.CreateBannerRequest:
+    properties:
+      image_url:
+        type: string
+      is_active:
+        type: boolean
+      link_type:
+        type: string
+      link_value:
+        type: string
+      sort_order:
+        type: integer
+    required:
+    - image_url
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.CreateBrandRequest:
+    properties:
+      is_active:
+        type: boolean
+      logo_url:
+        type: string
+      name:
+        maxLength: 255
+        minLength: 1
+        type: string
+      sort_order:
+        type: integer
+    required:
+    - name
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.CreateCategoryRequest:
+    properties:
+      image_url:
+        type: string
+      is_active:
+        type: boolean
+      name_ru:
+        maxLength: 255
+        minLength: 1
+        type: string
+      name_tm:
+        maxLength: 255
+        minLength: 1
+        type: string
+      sort_order:
+        type: integer
+    required:
+    - name_ru
+    - name_tm
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.CreateDeliveryZoneRequest:
+    properties:
+      delivery_price:
+        minimum: 0
+        type: number
+      is_active:
+        type: boolean
+      name_ru:
+        maxLength: 255
+        minLength: 1
+        type: string
+      name_tm:
+        maxLength: 255
+        minLength: 1
+        type: string
+    required:
+    - delivery_price
+    - name_ru
+    - name_tm
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.CreateOrderRequest:
+    properties:
+      address:
+        type: string
+      delivery_date:
+        type: string
+      delivery_zone_id:
+        type: integer
+      full_name:
+        maxLength: 200
+        minLength: 2
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.CartItemRequest'
+        minItems: 1
+        type: array
+      note:
+        type: string
+      phone:
+        type: string
+      time_slot:
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.OrderType'
+        enum:
+        - delivery
+        - pickup
+    required:
+    - delivery_date
+    - full_name
+    - items
+    - phone
+    - time_slot
+    - type
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.CreateProductRequest:
+    properties:
+      barcode:
+        type: string
+      brand_id:
+        type: integer
+      category_id:
+        type: integer
+      description_ru:
+        type: string
+      description_tm:
+        type: string
+      discount_percent:
+        type: integer
+      image_url:
+        type: string
+      images:
+        items:
+          type: string
+        type: array
+      is_active:
+        type: boolean
+      is_discount:
+        type: boolean
+      is_new:
+        type: boolean
+      name_ru:
+        maxLength: 500
+        minLength: 1
+        type: string
+      name_tm:
+        maxLength: 500
+        minLength: 1
+        type: string
+      old_price:
+        type: number
+      price:
+        type: number
+      sort_order:
+        type: integer
+      subcategory_id:
+        type: integer
+    required:
+    - image_url
+    - name_ru
+    - name_tm
+    - price
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.CreateSubCategoryRequest:
+    properties:
+      image_url:
+        type: string
+      is_active:
+        type: boolean
+      name_ru:
+        maxLength: 255
+        minLength: 1
+        type: string
+      name_tm:
+        maxLength: 255
+        minLength: 1
+        type: string
+      parent_id:
+        type: integer
+      sort_order:
+        type: integer
+    required:
+    - name_ru
+    - name_tm
+    - parent_id
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.CreateTimeSlotRequest:
+    properties:
+      end_time:
+        type: string
+      is_active:
+        type: boolean
+      label:
+        type: string
+      start_time:
+        type: string
+    required:
+    - end_time
+    - label
+    - start_time
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.DeliveryZone:
+    properties:
+      delivery_price:
+        type: number
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      name_ru:
+        type: string
+      name_tm:
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.DeliveryZoneResponse:
+    properties:
+      delivery_price:
+        type: number
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.LoginResponse:
+    properties:
+      access_token:
+        type: string
+      admin:
+        $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.AdminResponse'
+      expires_in:
+        type: integer
+      refresh_token:
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.Order:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      delivery_date:
+        type: string
+      delivery_fee:
+        type: number
+      delivery_zone_id:
+        type: integer
+      full_name:
+        type: string
+      id:
+        type: integer
+      note:
+        type: string
+      order_number:
+        type: string
+      phone:
+        type: string
+      status:
+        $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.OrderStatus'
+      subtotal:
+        type: number
+      time_slot:
+        type: string
+      total:
+        type: number
+      type:
+        $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.OrderType'
+      updated_at:
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.OrderItem:
+    properties:
+      id:
+        type: integer
+      order_id:
+        type: integer
+      price:
+        type: number
+      product_id:
+        type: integer
+      product_image_url:
+        type: string
+      product_name:
+        type: string
+      quantity:
+        type: integer
+      total:
+        type: number
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.OrderStatus:
+    enum:
+    - new
+    - confirmed
+    - shipped
+    - delivered
+    - cancelled
+    type: string
+    x-enum-varnames:
+    - OrderStatusNew
+    - OrderStatusConfirmed
+    - OrderStatusShipped
+    - OrderStatusDelivered
+    - OrderStatusCancelled
+  github_com_meransoft_commerce-backend_internal_models.OrderType:
+    enum:
+    - delivery
+    - pickup
+    type: string
+    x-enum-varnames:
+    - OrderTypeDelivery
+    - OrderTypePickup
+  github_com_meransoft_commerce-backend_internal_models.OrderWithItems:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      delivery_date:
+        type: string
+      delivery_fee:
+        type: number
+      delivery_zone_id:
+        type: integer
+      full_name:
+        type: string
+      id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.OrderItem'
+        type: array
+      note:
+        type: string
+      order_number:
+        type: string
+      phone:
+        type: string
+      status:
+        $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.OrderStatus'
+      subtotal:
+        type: number
+      time_slot:
+        type: string
+      total:
+        type: number
+      type:
+        $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.OrderType'
+      updated_at:
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.Pagination:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.Product:
+    properties:
+      barcode:
+        type: string
+      brand_id:
+        type: integer
+      brand_name:
+        description: Joined fields (not in DB)
+        type: string
+      category_id:
+        type: integer
+      created_at:
+        type: string
+      description_ru:
+        type: string
+      description_tm:
+        type: string
+      discount_percent:
+        type: integer
+      id:
+        type: integer
+      image_url:
+        type: string
+      images:
+        items:
+          type: string
+        type: array
+      is_active:
+        type: boolean
+      is_discount:
+        type: boolean
+      is_new:
+        type: boolean
+      name_ru:
+        type: string
+      name_tm:
+        type: string
+      old_price:
+        type: number
+      price:
+        type: number
+      sort_order:
+        type: integer
+      subcategory_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.ProductResponse:
+    properties:
+      barcode:
+        type: string
+      brand_id:
+        type: integer
+      brand_name:
+        type: string
+      category_id:
+        type: integer
+      description:
+        type: string
+      discount_percent:
+        type: integer
+      id:
+        type: integer
+      image_url:
+        type: string
+      images:
+        items:
+          type: string
+        type: array
+      is_discount:
+        type: boolean
+      is_new:
+        type: boolean
+      name:
+        type: string
+      old_price:
+        type: number
+      price:
+        type: number
+      subcategory_id:
+        type: integer
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.RefreshRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.SubCategory:
+    properties:
+      id:
+        type: integer
+      image_url:
+        type: string
+      is_active:
+        type: boolean
+      name_ru:
+        type: string
+      name_tm:
+        type: string
+      parent_id:
+        type: integer
+      sort_order:
+        type: integer
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.SubCategoryResponse:
+    properties:
+      id:
+        type: integer
+      image_url:
+        type: string
+      name:
+        type: string
+      parent_id:
+        type: integer
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.TimeSlot:
+    properties:
+      end_time:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      label:
+        type: string
+      start_time:
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.TimeSlotResponse:
+    properties:
+      end_time:
+        type: string
+      id:
+        type: integer
+      label:
+        type: string
+      start_time:
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.UpdateAdminRequest:
+    properties:
+      full_name:
+        type: string
+      is_active:
+        type: boolean
+      password:
+        minLength: 6
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.AdminRole'
+        enum:
+        - superadmin
+        - admin
+        - manager
+      username:
+        maxLength: 100
+        minLength: 3
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.UpdateBannerRequest:
+    properties:
+      image_url:
+        type: string
+      is_active:
+        type: boolean
+      link_type:
+        type: string
+      link_value:
+        type: string
+      sort_order:
+        type: integer
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.UpdateBrandRequest:
+    properties:
+      is_active:
+        type: boolean
+      logo_url:
+        type: string
+      name:
+        maxLength: 255
+        minLength: 1
+        type: string
+      sort_order:
+        type: integer
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.UpdateCategoryRequest:
+    properties:
+      image_url:
+        type: string
+      is_active:
+        type: boolean
+      name_ru:
+        maxLength: 255
+        minLength: 1
+        type: string
+      name_tm:
+        maxLength: 255
+        minLength: 1
+        type: string
+      sort_order:
+        type: integer
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.UpdateDeliveryZoneRequest:
+    properties:
+      delivery_price:
+        minimum: 0
+        type: number
+      is_active:
+        type: boolean
+      name_ru:
+        maxLength: 255
+        minLength: 1
+        type: string
+      name_tm:
+        maxLength: 255
+        minLength: 1
+        type: string
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.UpdateOrderStatusRequest:
+    properties:
+      status:
+        allOf:
+        - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.OrderStatus'
+        enum:
+        - new
+        - confirmed
+        - shipped
+        - delivered
+        - cancelled
+    required:
+    - status
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.UpdateProductRequest:
+    properties:
+      barcode:
+        type: string
+      brand_id:
+        type: integer
+      category_id:
+        type: integer
+      description_ru:
+        type: string
+      description_tm:
+        type: string
+      discount_percent:
+        type: integer
+      image_url:
+        type: string
+      images:
+        items:
+          type: string
+        type: array
+      is_active:
+        type: boolean
+      is_discount:
+        type: boolean
+      is_new:
+        type: boolean
+      name_ru:
+        maxLength: 500
+        minLength: 1
+        type: string
+      name_tm:
+        maxLength: 500
+        minLength: 1
+        type: string
+      old_price:
+        type: number
+      price:
+        type: number
+      sort_order:
+        type: integer
+      subcategory_id:
+        type: integer
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.UpdateSubCategoryRequest:
+    properties:
+      image_url:
+        type: string
+      is_active:
+        type: boolean
+      name_ru:
+        maxLength: 255
+        minLength: 1
+        type: string
+      name_tm:
+        maxLength: 255
+        minLength: 1
+        type: string
+      sort_order:
+        type: integer
+    type: object
+  github_com_meransoft_commerce-backend_internal_models.UpdateTimeSlotRequest:
+    properties:
+      end_time:
+        type: string
+      is_active:
+        type: boolean
+      label:
+        type: string
+      start_time:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: E-commerce backend API for household chemicals, cosmetics, and home
+    goods.
+  title: Commerce Backend API
+  version: "1.0"
+paths:
+  /admin/admins:
+    get:
+      description: Get all admin users (superadmin only)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.AdminResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: List all admins
+      tags:
+      - Admins
+    post:
+      consumes:
+      - application/json
+      description: Create a new admin user (superadmin only)
+      parameters:
+      - description: Admin data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.CreateAdminRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Admin'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Create admin
+      tags:
+      - Admins
+  /admin/admins/{id}:
+    delete:
+      description: Delete an admin user (superadmin only)
+      parameters:
+      - description: Admin ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete admin
+      tags:
+      - Admins
+    put:
+      consumes:
+      - application/json
+      description: Update an existing admin user (superadmin only)
+      parameters:
+      - description: Admin ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Admin data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.UpdateAdminRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Admin'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Update admin
+      tags:
+      - Admins
+  /admin/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate admin user and return JWT tokens
+      parameters:
+      - description: Login credentials
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.LoginResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: Admin login
+      tags:
+      - Auth
+  /admin/auth/me:
+    get:
+      description: Get currently authenticated admin info
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.AdminResponse'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Get current admin
+      tags:
+      - Auth
+  /admin/auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Get new access token using refresh token
+      parameters:
+      - description: Refresh token
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.RefreshRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.LoginResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: Refresh token
+      tags:
+      - Auth
+  /admin/banners:
+    get:
+      description: Get all banners including inactive (admin)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Banner'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: List all banners (admin)
+      tags:
+      - Banners
+    post:
+      consumes:
+      - application/json
+      description: Create a new banner (admin)
+      parameters:
+      - description: Banner data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.CreateBannerRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Banner'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Create banner
+      tags:
+      - Banners
+  /admin/banners/{id}:
+    delete:
+      description: Delete a banner (admin)
+      parameters:
+      - description: Banner ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete banner
+      tags:
+      - Banners
+    put:
+      consumes:
+      - application/json
+      description: Update an existing banner (admin)
+      parameters:
+      - description: Banner ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Banner data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.UpdateBannerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Banner'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Update banner
+      tags:
+      - Banners
+  /admin/brands:
+    get:
+      description: Get all brands including inactive (admin)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Brand'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: List all brands (admin)
+      tags:
+      - Brands
+    post:
+      consumes:
+      - application/json
+      description: Create a new brand (admin)
+      parameters:
+      - description: Brand data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.CreateBrandRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Brand'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Create brand
+      tags:
+      - Brands
+  /admin/brands/{id}:
+    delete:
+      description: Delete a brand (admin)
+      parameters:
+      - description: Brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete brand
+      tags:
+      - Brands
+    put:
+      consumes:
+      - application/json
+      description: Update an existing brand (admin)
+      parameters:
+      - description: Brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Brand data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.UpdateBrandRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Brand'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Update brand
+      tags:
+      - Brands
+  /admin/categories:
+    get:
+      description: Get all categories including inactive (admin)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Category'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: List all categories (admin)
+      tags:
+      - Categories
+    post:
+      consumes:
+      - application/json
+      description: Create a new category (admin)
+      parameters:
+      - description: Category data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.CreateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Category'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Create category
+      tags:
+      - Categories
+  /admin/categories/{id}:
+    delete:
+      description: Delete a category (admin)
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete category
+      tags:
+      - Categories
+    put:
+      consumes:
+      - application/json
+      description: Update an existing category (admin)
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Category data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.UpdateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Category'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Update category
+      tags:
+      - Categories
+  /admin/delivery-zones:
+    get:
+      description: Get all delivery zones including inactive (admin)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.DeliveryZone'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: List all delivery zones (admin)
+      tags:
+      - Delivery Zones
+    post:
+      consumes:
+      - application/json
+      description: Create a new delivery zone (admin)
+      parameters:
+      - description: Delivery zone data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.CreateDeliveryZoneRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.DeliveryZone'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Create delivery zone
+      tags:
+      - Delivery Zones
+  /admin/delivery-zones/{id}:
+    delete:
+      description: Delete a delivery zone (admin)
+      parameters:
+      - description: Delivery zone ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete delivery zone
+      tags:
+      - Delivery Zones
+    put:
+      consumes:
+      - application/json
+      description: Update an existing delivery zone (admin)
+      parameters:
+      - description: Delivery zone ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Delivery zone data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.UpdateDeliveryZoneRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.DeliveryZone'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Update delivery zone
+      tags:
+      - Delivery Zones
+  /admin/orders:
+    get:
+      description: Get all orders with filtering and pagination (admin)
+      parameters:
+      - description: Filter by status (new, confirmed, shipped, delivered, cancelled)
+        in: query
+        name: status
+        type: string
+      - description: Filter by type (delivery, pickup)
+        in: query
+        name: type
+        type: string
+      - description: Filter by phone
+        in: query
+        name: phone
+        type: string
+      - description: Search by name or order number
+        in: query
+        name: search
+        type: string
+      - description: Filter from date (YYYY-MM-DD)
+        in: query
+        name: date_from
+        type: string
+      - description: Filter to date (YYYY-MM-DD)
+        in: query
+        name: date_to
+        type: string
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Order'
+                  type: array
+                pagination:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Pagination'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: List all orders (admin)
+      tags:
+      - Orders
+  /admin/orders/{id}:
+    get:
+      description: Get order with items by ID (admin)
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.OrderWithItems'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Get order details (admin)
+      tags:
+      - Orders
+  /admin/orders/{id}/status:
+    put:
+      consumes:
+      - application/json
+      description: Change order status (admin)
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: New status
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.UpdateOrderStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Update order status (admin)
+      tags:
+      - Orders
+  /admin/products:
+    get:
+      description: Get all products with filtering and pagination (admin)
+      parameters:
+      - description: Filter by category ID
+        in: query
+        name: category_id
+        type: integer
+      - description: Filter by subcategory ID
+        in: query
+        name: subcategory_id
+        type: integer
+      - description: Filter by brand ID
+        in: query
+        name: brand_id
+        type: integer
+      - description: Search by name
+        in: query
+        name: search
+        type: string
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Product'
+                  type: array
+                pagination:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Pagination'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: List all products (admin)
+      tags:
+      - Products
+    post:
+      consumes:
+      - application/json
+      description: Create a new product (admin)
+      parameters:
+      - description: Product data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Product'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Create product
+      tags:
+      - Products
+  /admin/products/{id}:
+    delete:
+      description: Delete a product (admin)
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete product
+      tags:
+      - Products
+    get:
+      description: Get a single product by ID with all fields (admin)
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Product'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Get product (admin)
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      description: Update an existing product (admin)
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.UpdateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Product'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Update product
+      tags:
+      - Products
+  /admin/subcategories:
+    post:
+      consumes:
+      - application/json
+      description: Create a new subcategory (admin)
+      parameters:
+      - description: Subcategory data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.CreateSubCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.SubCategory'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Create subcategory
+      tags:
+      - SubCategories
+  /admin/subcategories/{id}:
+    delete:
+      description: Delete a subcategory (admin)
+      parameters:
+      - description: Subcategory ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete subcategory
+      tags:
+      - SubCategories
+    put:
+      consumes:
+      - application/json
+      description: Update an existing subcategory (admin)
+      parameters:
+      - description: Subcategory ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Subcategory data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.UpdateSubCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.SubCategory'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Update subcategory
+      tags:
+      - SubCategories
+  /admin/time-slots:
+    get:
+      description: Get all time slots including inactive (admin)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.TimeSlot'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: List all time slots (admin)
+      tags:
+      - Time Slots
+    post:
+      consumes:
+      - application/json
+      description: Create a new time slot (admin)
+      parameters:
+      - description: Time slot data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.CreateTimeSlotRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.TimeSlot'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Create time slot
+      tags:
+      - Time Slots
+  /admin/time-slots/{id}:
+    delete:
+      description: Delete a time slot (admin)
+      parameters:
+      - description: Time slot ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete time slot
+      tags:
+      - Time Slots
+    put:
+      consumes:
+      - application/json
+      description: Update an existing time slot (admin)
+      parameters:
+      - description: Time slot ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Time slot data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.UpdateTimeSlotRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.TimeSlot'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Update time slot
+      tags:
+      - Time Slots
+  /admin/upload:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an uploaded file (admin)
+      parameters:
+      - description: JSON with url field
+        in: body
+        name: body
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete file
+      tags:
+      - Upload
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload an image file (admin)
+      parameters:
+      - description: Image file (jpg, jpeg, png, gif, webp, svg)
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      security:
+      - BearerAuth: []
+      summary: Upload file
+      tags:
+      - Upload
+  /banners:
+    get:
+      description: Get all active banners (public)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.BannerResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: List banners
+      tags:
+      - Banners
+  /brands:
+    get:
+      description: Get all active brands (public)
+      parameters:
+      - description: Search by name
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.BrandResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: List brands
+      tags:
+      - Brands
+  /categories:
+    get:
+      description: Get all active categories with subcategories (public)
+      parameters:
+      - default: ru
+        description: Language (ru or tm)
+        in: query
+        name: lang
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.CategoryResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: List categories
+      tags:
+      - Categories
+  /categories/{id}/subcategories:
+    get:
+      description: Get subcategories by category ID (public)
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: ru
+        description: Language (ru or tm)
+        in: query
+        name: lang
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.SubCategoryResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: List subcategories
+      tags:
+      - Categories
+  /delivery-zones:
+    get:
+      description: Get all active delivery zones (public)
+      parameters:
+      - default: ru
+        description: Language (ru or tm)
+        in: query
+        name: lang
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.DeliveryZoneResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: List delivery zones
+      tags:
+      - Delivery Zones
+  /home:
+    get:
+      description: 'Get aggregated data for home page: banners, brands, categories,
+        new and discounted products'
+      parameters:
+      - default: ru
+        description: Language (ru or tm)
+        in: query
+        name: lang
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: Home page data
+      tags:
+      - Home
+  /orders:
+    get:
+      description: Get order history by phone number (public)
+      parameters:
+      - description: Phone number
+        in: query
+        name: phone
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Order'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: Get orders by phone
+      tags:
+      - Orders
+    post:
+      consumes:
+      - application/json
+      description: Create a new order (public)
+      parameters:
+      - description: Order data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.CreateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.OrderWithItems'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: Create order
+      tags:
+      - Orders
+  /products:
+    get:
+      description: Get products with filtering, sorting, and pagination (public)
+      parameters:
+      - default: ru
+        description: Language (ru or tm)
+        in: query
+        name: lang
+        type: string
+      - description: Filter by category ID
+        in: query
+        name: category_id
+        type: integer
+      - description: Filter by subcategory ID
+        in: query
+        name: subcategory_id
+        type: integer
+      - description: Filter by brand ID
+        in: query
+        name: brand_id
+        type: integer
+      - description: Search by name
+        in: query
+        name: search
+        type: string
+      - description: 'Sort: price_asc, price_desc, newest, name_asc'
+        in: query
+        name: sort
+        type: string
+      - description: Filter new products
+        in: query
+        name: is_new
+        type: boolean
+      - description: Filter discounted products
+        in: query
+        name: is_discount
+        type: boolean
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ProductResponse'
+                  type: array
+                pagination:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.Pagination'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: List products
+      tags:
+      - Products
+  /products/{id}:
+    get:
+      description: Get a single product by ID (public)
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: ru
+        description: Language (ru or tm)
+        in: query
+        name: lang
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ProductResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: Get product
+      tags:
+      - Products
+  /products/{id}/related:
+    get:
+      description: Get related products from the same category (public)
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: ru
+        description: Language (ru or tm)
+        in: query
+        name: lang
+        type: string
+      - default: 10
+        description: Number of related products
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ProductResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: Get related products
+      tags:
+      - Products
+  /time-slots:
+    get:
+      description: Get all active time slots (public)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.TimeSlotResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_meransoft_commerce-backend_internal_models.ApiResponse'
+      summary: List time slots
+      tags:
+      - Time Slots
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

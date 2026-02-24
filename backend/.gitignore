@@ -1,0 +1,33 @@
+# Binary
+server
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+tmp/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Uploads (keep directory structure, ignore user content)
+uploads/*
+!uploads/.gitkeep
+
+# Test / Coverage
+*.test
+*.out
+coverage.html
+coverage.txt
+
+# Vendor (if not committed)
+# vendor/
+
+# Go build cache
+__debug_bin*
+
+# Air live reload
+.air.toml
