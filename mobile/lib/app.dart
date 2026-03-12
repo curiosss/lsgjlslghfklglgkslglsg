@@ -22,7 +22,11 @@ class CommerceApp extends StatelessWidget {
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           themeMode: appProvider.themeMode,
-          locale: appProvider.locale,
+          locale: Locale(
+            appProvider.locale.languageCode == 'tk'
+                ? 'tr'
+                : appProvider.languageCode,
+          ),
           supportedLocales: AppLocalizations.supportedLocales,
           localizationsDelegates: const [
             AppLocalizations.delegate,
