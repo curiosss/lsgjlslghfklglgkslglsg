@@ -14,7 +14,7 @@ tmp/
 !.env.example
 
 # Uploads (keep directory structure, ignore user content)
-uploads/*
+# uploads/*
 !uploads/.gitkeep
 
 # Test / Coverage
