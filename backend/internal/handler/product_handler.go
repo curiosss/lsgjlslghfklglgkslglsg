@@ -23,7 +23,7 @@ func NewProductHandler(service *service.ProductService) *ProductHandler {
 // @Description  Get products with filtering, sorting, and pagination (public)
 // @Tags         Products
 // @Produce      json
-// @Param        lang            query     string  false  "Language (ru or tm)"  default(ru)
+// @Param        lang            query     string  false  "Language (ru, tm, or en)"  default(ru)
 // @Param        category_id     query     int     false  "Filter by category ID"
 // @Param        subcategory_id  query     int     false  "Filter by subcategory ID"
 // @Param        brand_id        query     int     false  "Filter by brand ID"
@@ -95,7 +95,7 @@ func (h *ProductHandler) AdminGetAll(c *gin.Context) {
 // @Tags         Products
 // @Produce      json
 // @Param        id    path      int     true   "Product ID"
-// @Param        lang  query     string  false  "Language (ru or tm)"  default(ru)
+// @Param        lang  query     string  false  "Language (ru, tm, or en)"  default(ru)
 // @Success      200   {object}  models.ApiResponse{data=models.ProductResponse}
 // @Failure      400   {object}  models.ApiResponse
 // @Failure      404   {object}  models.ApiResponse
@@ -146,7 +146,7 @@ func (h *ProductHandler) AdminGetByID(c *gin.Context) {
 // @Tags         Products
 // @Produce      json
 // @Param        id     path      int     true   "Product ID"
-// @Param        lang   query     string  false  "Language (ru or tm)"  default(ru)
+// @Param        lang   query     string  false  "Language (ru, tm, or en)"  default(ru)
 // @Param        limit  query     int     false  "Number of related products"  default(10)
 // @Success      200    {object}  models.ApiResponse{data=[]models.ProductResponse}
 // @Failure      400    {object}  models.ApiResponse

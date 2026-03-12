@@ -1,0 +1,102 @@
+{
+  "@@locale": "en",
+
+  "home": "Home",
+  "categories": "Categories",
+  "cart": "Cart",
+  "favorites": "Favorites",
+  "orders": "Orders",
+
+  "search": "Search",
+  "newArrivals": "New Arrivals",
+  "discounts": "Discounts",
+  "addToCart": "Add to Cart",
+  "pieces": "pcs",
+
+  "brands": "Brands",
+  "searchBrand": "Search",
+
+  "emptyCart": "Your cart is empty",
+  "emptyCartSubtitle": "Add items to your cart\nto place an order",
+  "clearCart": "Clear cart",
+  "checkout": "Checkout",
+
+  "emptyFavorites": "Your favorites list\nis empty",
+  "emptyFavoritesSubtitle": "Add items to your favorites\nto save them on your device",
+
+  "orderHistory": "Order History",
+  "delivery": "Delivery",
+  "pickup": "Pickup",
+  "allOrders": "All",
+  "newOrders": "New",
+  "confirmed": "Confirmed",
+  "shipped": "Shipped",
+  "delivered": "Delivered",
+  "cancelled": "Cancelled",
+  "noResults": "No results found\nfor your search",
+  "orderNumber": "Order",
+  "items": "item(s)",
+  "total": "Total",
+
+  "orderDelivery": "Order - Delivery",
+  "orderType": "Order type",
+  "fillFields": "Fill in the fields",
+  "fullName": "Full Name",
+  "phone": "Phone number",
+  "address": "Address",
+  "note": "Note",
+  "cartTotal": "Cart total:",
+  "deliveryFee": "Delivery fee:",
+  "placeOrder": "Place Order",
+  "fieldRequired": "This field is required",
+  "phoneFieldRequired": "Phone number is required",
+  "nameFieldRequired": "Full Name is required",
+  "addressFieldRequired": "Address is required",
+  "selectDate": "Select date",
+  "selectTimeSlot": "Select time",
+
+  "lowPrice": "Low prices",
+  "highPrice": "High prices",
+  "totalCount": "Total:\n{count} item(s)",
+  "@totalCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "barcode": "Barcode",
+  "brand": "Brand",
+  "relatedProducts": "Related Products",
+
+  "profile": "Profile",
+  "theme": "Theme",
+  "language": "Language",
+  "contactUs": "Contact Us",
+  "about": "About",
+  "lightTheme": "Light",
+  "darkTheme": "Dark",
+  "systemTheme": "System",
+  "selectLanguage": "Select language",
+  "russian": "Русский",
+  "turkmen": "Türkmen",
+  "appVersion": "v1.0.0",
+
+  "manat": "m.",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "delete": "Delete",
+  "clearCartConfirm": "Clear the cart?",
+  "orderSuccess": "Order placed successfully!",
+
+  "priceFormat": "{price} m.",
+  "@priceFormat": {
+    "placeholders": {
+      "price": {"type": "String"}
+    }
+  },
+  "itemCount": "{count} pcs",
+  "@itemCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  }
+}

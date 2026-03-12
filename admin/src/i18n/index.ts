@@ -1,7 +1,7 @@
 import { ru } from './ru';
 import { tm } from './tm';
 import { en } from './en';
-import { useLocaleStore } from '@/store/locale';
+import { useLocaleStore } from '../store/locale';
 
 const translations: Record<string, Record<string, string>> = { ru, tm, en };
 

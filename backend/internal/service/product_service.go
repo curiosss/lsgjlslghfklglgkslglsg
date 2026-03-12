@@ -82,11 +82,13 @@ func (s *ProductService) Create(ctx context.Context, req models.CreateProductReq
 	product := &models.Product{
 		NameRu:          req.NameRu,
 		NameTm:          req.NameTm,
+		NameEn:          req.NameEn,
 		BrandID:         req.BrandID,
 		CategoryID:      req.CategoryID,
 		SubCategoryID:   req.SubCategoryID,
 		DescriptionRu:   req.DescriptionRu,
 		DescriptionTm:   req.DescriptionTm,
+		DescriptionEn:   req.DescriptionEn,
 		Price:           req.Price,
 		OldPrice:        req.OldPrice,
 		DiscountPercent: req.DiscountPercent,
@@ -115,6 +117,9 @@ func (s *ProductService) Update(ctx context.Context, id int, req models.UpdatePr
 	if req.NameTm != nil {
 		product.NameTm = *req.NameTm
 	}
+	if req.NameEn != nil {
+		product.NameEn = *req.NameEn
+	}
 	if req.BrandID != nil {
 		product.BrandID = req.BrandID
 	}
@@ -129,6 +134,9 @@ func (s *ProductService) Update(ctx context.Context, id int, req models.UpdatePr
 	}
 	if req.DescriptionTm != nil {
 		product.DescriptionTm = req.DescriptionTm
+	}
+	if req.DescriptionEn != nil {
+		product.DescriptionEn = req.DescriptionEn
 	}
 	if req.Price != nil {
 		product.Price = *req.Price

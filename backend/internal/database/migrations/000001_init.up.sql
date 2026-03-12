@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS categories (
     id                 SERIAL PRIMARY KEY,
     name_ru            VARCHAR(255) NOT NULL,
     name_tm            VARCHAR(255) NOT NULL,
+    name_en            VARCHAR(255) NOT NULL DEFAULT '',
     image_url          VARCHAR(500),
     has_subcategories  BOOLEAN NOT NULL DEFAULT false,
     sort_order         INT NOT NULL DEFAULT 0,
@@ -26,6 +27,7 @@ CREATE TABLE IF NOT EXISTS subcategories (
     parent_id   INT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
     name_ru     VARCHAR(255) NOT NULL,
     name_tm     VARCHAR(255) NOT NULL,
+    name_en     VARCHAR(255) NOT NULL DEFAULT '',
     image_url   VARCHAR(500),
     sort_order  INT NOT NULL DEFAULT 0,
     is_active   BOOLEAN NOT NULL DEFAULT true
@@ -36,11 +38,13 @@ CREATE TABLE IF NOT EXISTS products (
     id               SERIAL PRIMARY KEY,
     name_ru          VARCHAR(500) NOT NULL,
     name_tm          VARCHAR(500) NOT NULL,
+    name_en          VARCHAR(500) NOT NULL DEFAULT '',
     brand_id         INT REFERENCES brands(id) ON DELETE SET NULL,
     category_id      INT REFERENCES categories(id) ON DELETE SET NULL,
     subcategory_id   INT REFERENCES subcategories(id) ON DELETE SET NULL,
     description_ru   TEXT,
     description_tm   TEXT,
+    description_en   TEXT,
     price            DECIMAL(10,2) NOT NULL,
     old_price        DECIMAL(10,2),
     discount_percent INT,
@@ -78,6 +82,7 @@ CREATE TABLE IF NOT EXISTS delivery_zones (
     id              SERIAL PRIMARY KEY,
     name_ru         VARCHAR(255) NOT NULL,
     name_tm         VARCHAR(255) NOT NULL,
+    name_en         VARCHAR(255) NOT NULL DEFAULT '',
     delivery_price  DECIMAL(10,2) NOT NULL,
     is_active       BOOLEAN NOT NULL DEFAULT true
 );

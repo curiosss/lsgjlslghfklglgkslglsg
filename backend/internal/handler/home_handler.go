@@ -22,7 +22,7 @@ func NewHomeHandler(service *service.HomeService) *HomeHandler {
 // @Description  Get aggregated data for home page: banners, brands, categories, new and discounted products
 // @Tags         Home
 // @Produce      json
-// @Param        lang  query     string  false  "Language (ru or tm)"  default(ru)
+// @Param        lang  query     string  false  "Language (ru, tm, or en)"  default(ru)
 // @Success      200   {object}  models.ApiResponse
 // @Failure      500   {object}  models.ApiResponse
 // @Router       /home [get]

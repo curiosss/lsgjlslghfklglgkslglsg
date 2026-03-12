@@ -45,4 +45,5 @@ class AppProvider extends ChangeNotifier {
   String get languageCode => _locale.languageCode;
   bool get isRussian => _locale.languageCode == 'ru';
   bool get isTurkmen => _locale.languageCode == 'tk';
+  bool get isEnglish => _locale.languageCode == 'en';
 }

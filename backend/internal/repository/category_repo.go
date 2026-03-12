@@ -39,13 +39,13 @@ func (r *CategoryRepo) GetByID(ctx context.Context, id int) (*models.Category, e
 }
 
 func (r *CategoryRepo) Create(ctx context.Context, c *models.Category) error {
-	query := `INSERT INTO categories (name_ru, name_tm, image_url, sort_order, is_active) VALUES ($1, $2, $3, $4, $5) RETURNING id, created_at`
-	return r.db.QueryRowxContext(ctx, query, c.NameRu, c.NameTm, c.ImageUrl, c.SortOrder, c.IsActive).Scan(&c.ID, &c.CreatedAt)
+	query := `INSERT INTO categories (name_ru, name_tm, name_en, image_url, sort_order, is_active) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, created_at`
+	return r.db.QueryRowxContext(ctx, query, c.NameRu, c.NameTm, c.NameEn, c.ImageUrl, c.SortOrder, c.IsActive).Scan(&c.ID, &c.CreatedAt)
 }
 
 func (r *CategoryRepo) Update(ctx context.Context, c *models.Category) error {
-	query := `UPDATE categories SET name_ru=$1, name_tm=$2, image_url=$3, sort_order=$4, is_active=$5 WHERE id=$6`
-	_, err := r.db.ExecContext(ctx, query, c.NameRu, c.NameTm, c.ImageUrl, c.SortOrder, c.IsActive, c.ID)
+	query := `UPDATE categories SET name_ru=$1, name_tm=$2, name_en=$3, image_url=$4, sort_order=$5, is_active=$6 WHERE id=$7`
+	_, err := r.db.ExecContext(ctx, query, c.NameRu, c.NameTm, c.NameEn, c.ImageUrl, c.SortOrder, c.IsActive, c.ID)
 	return err
 }
 
@@ -85,13 +85,13 @@ func (r *CategoryRepo) GetSubCategoryByID(ctx context.Context, id int) (*models.
 }
 
 func (r *CategoryRepo) CreateSubCategory(ctx context.Context, s *models.SubCategory) error {
-	query := `INSERT INTO subcategories (parent_id, name_ru, name_tm, image_url, sort_order, is_active) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
-	return r.db.QueryRowxContext(ctx, query, s.ParentID, s.NameRu, s.NameTm, s.ImageUrl, s.SortOrder, s.IsActive).Scan(&s.ID)
+	query := `INSERT INTO subcategories (parent_id, name_ru, name_tm, name_en, image_url, sort_order, is_active) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`
+	return r.db.QueryRowxContext(ctx, query, s.ParentID, s.NameRu, s.NameTm, s.NameEn, s.ImageUrl, s.SortOrder, s.IsActive).Scan(&s.ID)
 }
 
 func (r *CategoryRepo) UpdateSubCategory(ctx context.Context, s *models.SubCategory) error {
-	query := `UPDATE subcategories SET name_ru=$1, name_tm=$2, image_url=$3, sort_order=$4, is_active=$5 WHERE id=$6`
-	_, err := r.db.ExecContext(ctx, query, s.NameRu, s.NameTm, s.ImageUrl, s.SortOrder, s.IsActive, s.ID)
+	query := `UPDATE subcategories SET name_ru=$1, name_tm=$2, name_en=$3, image_url=$4, sort_order=$5, is_active=$6 WHERE id=$7`
+	_, err := r.db.ExecContext(ctx, query, s.NameRu, s.NameTm, s.NameEn, s.ImageUrl, s.SortOrder, s.IsActive, s.ID)
 	return err
 }
 

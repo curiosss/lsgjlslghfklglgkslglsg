@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Table, Modal, Form, Input, Switch, Space, message } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import * as slotsApi from '../api/time-slots';
+import { useTr } from '../i18n';
 import type { TimeSlot } from '../types';
 
 export const TimeSlotsPage = () => {
@@ -10,6 +11,7 @@ export const TimeSlotsPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<TimeSlot | null>(null);
   const [form] = Form.useForm();
+  const t = useTr();
 
   const fetchSlots = async () => {
     setLoading(true);
@@ -17,7 +19,7 @@ export const TimeSlotsPage = () => {
       const { data: resp } = await slotsApi.getTimeSlots();
       setSlots(resp.data ?? []);
     } catch {
-      message.error('Ошибка загрузки временных слотов');
+      message.error(t('error_loading_slots'));
     } finally {
       setLoading(false);
     }
@@ -38,37 +40,37 @@ export const TimeSlotsPage = () => {
     try {
       if (editing) {
         await slotsApi.updateTimeSlot(editing.id, values);
-        message.success('Слот обновлён');
+        message.success(t('slot_updated'));
       } else {
         await slotsApi.createTimeSlot(values);
-        message.success('Слот создан');
+        message.success(t('slot_created'));
       }
       setModalOpen(false);
       fetchSlots();
     } catch {
-      message.error('Ошибка сохранения');
+      message.error(t('error_saving'));
     }
   };
 
   const handleDelete = (id: number) => {
     Modal.confirm({
-      title: 'Удалить временной слот?',
-      okText: 'Удалить', cancelText: 'Отмена', okType: 'danger',
+      title: t('delete_slot_title'),
+      okText: t('delete'), cancelText: t('cancel'), okType: 'danger',
       onOk: async () => {
-        try { await slotsApi.deleteTimeSlot(id); message.success('Слот удалён'); fetchSlots(); }
-        catch { message.error('Ошибка удаления'); }
+        try { await slotsApi.deleteTimeSlot(id); message.success(t('slot_deleted')); fetchSlots(); }
+        catch { message.error(t('error_deleting')); }
       },
     });
   };
 
   const columns = [
-    { title: 'ID', dataIndex: 'id', key: 'id', width: 60 },
-    { title: 'Начало', dataIndex: 'start_time', key: 'start_time' },
-    { title: 'Конец', dataIndex: 'end_time', key: 'end_time' },
-    { title: 'Метка', dataIndex: 'label', key: 'label' },
-    { title: 'Активен', dataIndex: 'is_active', key: 'is_active', width: 100, render: (v: boolean) => v ? 'Да' : 'Нет' },
+    { title: t('col_id'), dataIndex: 'id', key: 'id', width: 60 },
+    { title: t('col_start'), dataIndex: 'start_time', key: 'start_time' },
+    { title: t('col_end'), dataIndex: 'end_time', key: 'end_time' },
+    { title: t('col_label'), dataIndex: 'label', key: 'label' },
+    { title: t('col_active'), dataIndex: 'is_active', key: 'is_active', width: 100, render: (v: boolean) => v ? t('yes') : t('no') },
     {
-      title: 'Действия', key: 'actions', width: 120,
+      title: t('actions'), key: 'actions', width: 120,
       render: (_: unknown, record: TimeSlot) => (
         <Space>
           <Button icon={<EditOutlined />} size="small" onClick={() => openModal(record)} />
@@ -81,22 +83,22 @@ export const TimeSlotsPage = () => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-        <h2>Временные слоты</h2>
-        <Button type="primary" icon={<PlusOutlined />} onClick={() => openModal()}>Добавить</Button>
+        <h2>{t('time_slots_title')}</h2>
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => openModal()}>{t('add')}</Button>
       </div>
       <Table columns={columns} dataSource={slots} rowKey="id" loading={loading} pagination={false} />
-      <Modal title={editing ? 'Редактировать слот' : 'Новый слот'} open={modalOpen} onOk={handleSubmit} onCancel={() => setModalOpen(false)} okText="Сохранить" cancelText="Отмена">
+      <Modal title={editing ? t('modal_edit_slot') : t('modal_new_slot')} open={modalOpen} onOk={handleSubmit} onCancel={() => setModalOpen(false)} okText={t('save')} cancelText={t('cancel')}>
         <Form form={form} layout="vertical">
-          <Form.Item name="start_time" label="Время начала" rules={[{ required: true, message: 'Введите время' }]}>
+          <Form.Item name="start_time" label={t('label_start_time')} rules={[{ required: true, message: t('validation_enter_time') }]}>
             <Input placeholder="09:00" />
           </Form.Item>
-          <Form.Item name="end_time" label="Время окончания" rules={[{ required: true, message: 'Введите время' }]}>
+          <Form.Item name="end_time" label={t('label_end_time')} rules={[{ required: true, message: t('validation_enter_time') }]}>
             <Input placeholder="12:00" />
           </Form.Item>
-          <Form.Item name="label" label="Метка" rules={[{ required: true, message: 'Введите метку' }]}>
-            <Input placeholder="Утро (09:00 - 12:00)" />
+          <Form.Item name="label" label={t('label_label')} rules={[{ required: true, message: t('validation_enter_label') }]}>
+            <Input placeholder="09:00 - 12:00" />
           </Form.Item>
-          <Form.Item name="is_active" label="Активен" valuePropName="checked">
+          <Form.Item name="is_active" label={t('col_active')} valuePropName="checked">
             <Switch />
           </Form.Item>
         </Form>

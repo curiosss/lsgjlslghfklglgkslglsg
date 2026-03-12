@@ -7,5 +7,8 @@ func GetLang(c *gin.Context) string {
 	if lang == "tm" {
 		return "tm"
 	}
+	if lang == "en" {
+		return "en"
+	}
 	return "ru"
 }

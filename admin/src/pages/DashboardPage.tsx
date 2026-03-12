@@ -8,6 +8,7 @@ import * as brandsApi from '../api/brands';
 import * as ordersApi from '../api/orders';
 import { StatusTag } from '../components/StatusTag';
 import { formatDateTime, formatPrice } from '../utils/format';
+import { useTr } from '../i18n';
 import type { Order } from '../types';
 
 export const DashboardPage = () => {
@@ -15,6 +16,7 @@ export const DashboardPage = () => {
   const [stats, setStats] = useState({ products: 0, categories: 0, brands: 0, orders: 0 });
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const t = useTr();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +35,7 @@ export const DashboardPage = () => {
         });
         setRecentOrders(ordersRes.data.data ?? []);
       } catch {
-        message.error('Ошибка загрузки данных');
+        message.error(t('error_loading_data'));
       } finally {
         setLoading(false);
       }
@@ -42,31 +44,31 @@ export const DashboardPage = () => {
   }, []);
 
   const columns = [
-    { title: '№ Заказа', dataIndex: 'order_number', key: 'order_number' },
-    { title: 'Клиент', dataIndex: 'full_name', key: 'full_name' },
-    { title: 'Телефон', dataIndex: 'phone', key: 'phone' },
-    { title: 'Сумма', dataIndex: 'total', key: 'total', render: (v: number) => formatPrice(v) },
-    { title: 'Статус', dataIndex: 'status', key: 'status', render: (v: string) => <StatusTag status={v} /> },
-    { title: 'Дата', dataIndex: 'created_at', key: 'created_at', render: (v: string) => formatDateTime(v) },
+    { title: t('col_order_number'), dataIndex: 'order_number', key: 'order_number' },
+    { title: t('col_client'), dataIndex: 'full_name', key: 'full_name' },
+    { title: t('col_phone'), dataIndex: 'phone', key: 'phone' },
+    { title: t('col_total'), dataIndex: 'total', key: 'total', render: (v: number) => formatPrice(v) },
+    { title: t('col_status'), dataIndex: 'status', key: 'status', render: (v: string) => <StatusTag status={v} /> },
+    { title: t('col_date'), dataIndex: 'created_at', key: 'created_at', render: (v: string) => formatDateTime(v) },
   ];
 
   return (
     <>
       <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
         <Col xs={12} sm={6}>
-          <Card><Statistic title="Товары" value={stats.products} prefix={<ShoppingOutlined />} /></Card>
+          <Card><Statistic title={t('stat_products')} value={stats.products} prefix={<ShoppingOutlined />} /></Card>
         </Col>
         <Col xs={12} sm={6}>
-          <Card><Statistic title="Категории" value={stats.categories} prefix={<AppstoreOutlined />} /></Card>
+          <Card><Statistic title={t('stat_categories')} value={stats.categories} prefix={<AppstoreOutlined />} /></Card>
         </Col>
         <Col xs={12} sm={6}>
-          <Card><Statistic title="Бренды" value={stats.brands} prefix={<TagOutlined />} /></Card>
+          <Card><Statistic title={t('stat_brands')} value={stats.brands} prefix={<TagOutlined />} /></Card>
         </Col>
         <Col xs={12} sm={6}>
-          <Card><Statistic title="Заказы" value={stats.orders} prefix={<OrderedListOutlined />} /></Card>
+          <Card><Statistic title={t('stat_orders')} value={stats.orders} prefix={<OrderedListOutlined />} /></Card>
         </Col>
       </Row>
-      <Card title="Последние заказы">
+      <Card title={t('recent_orders')}>
         <Table
           columns={columns}
           dataSource={recentOrders}

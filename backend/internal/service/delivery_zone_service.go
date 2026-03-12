@@ -40,6 +40,7 @@ func (s *DeliveryZoneService) Create(ctx context.Context, req models.CreateDeliv
 	zone := &models.DeliveryZone{
 		NameRu:        req.NameRu,
 		NameTm:        req.NameTm,
+		NameEn:        req.NameEn,
 		DeliveryPrice: req.DeliveryPrice,
 		IsActive:      isActive,
 	}
@@ -59,6 +60,9 @@ func (s *DeliveryZoneService) Update(ctx context.Context, id int, req models.Upd
 	}
 	if req.NameTm != nil {
 		zone.NameTm = *req.NameTm
+	}
+	if req.NameEn != nil {
+		zone.NameEn = *req.NameEn
 	}
 	if req.DeliveryPrice != nil {
 		zone.DeliveryPrice = *req.DeliveryPrice

@@ -2,11 +2,13 @@ export interface Product {
   id: number;
   name_ru: string;
   name_tm: string;
+  name_en?: string;
   brand_id?: number;
   category_id?: number;
   subcategory_id?: number;
   description_ru?: string;
   description_tm?: string;
+  description_en?: string;
   price: number;
   old_price?: number;
   discount_percent?: number;
@@ -25,11 +27,13 @@ export interface Product {
 export interface CreateProductRequest {
   name_ru: string;
   name_tm: string;
+  name_en?: string;
   brand_id?: number;
   category_id?: number;
   subcategory_id?: number;
   description_ru?: string;
   description_tm?: string;
+  description_en?: string;
   price: number;
   old_price?: number;
   discount_percent?: number;
@@ -45,11 +49,13 @@ export interface CreateProductRequest {
 export interface UpdateProductRequest {
   name_ru?: string;
   name_tm?: string;
+  name_en?: string;
   brand_id?: number;
   category_id?: number;
   subcategory_id?: number;
   description_ru?: string;
   description_tm?: string;
+  description_en?: string;
   price?: number;
   old_price?: number;
   discount_percent?: number;

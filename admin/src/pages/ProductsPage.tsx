@@ -9,6 +9,7 @@ import * as categoriesApi from '../api/categories';
 import * as brandsApi from '../api/brands';
 import { ImageUpload } from '../components/ImageUpload';
 import { formatPrice, formatDateTime } from '../utils/format';
+import { useTr } from '../i18n';
 import type { Product, Category, SubCategory, Brand, ProductFilters, Pagination } from '../types';
 
 export const ProductsPage = () => {
@@ -18,6 +19,7 @@ export const ProductsPage = () => {
   const [editing, setEditing] = useState<Product | null>(null);
   const [form] = Form.useForm();
   const [searchForm] = Form.useForm();
+  const t = useTr();
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
@@ -33,7 +35,7 @@ export const ProductsPage = () => {
       setProducts(resp.data ?? []);
       if (resp.pagination) setPagination(resp.pagination);
     } catch {
-      message.error('Ошибка загрузки товаров');
+      message.error(t('error_loading_products'));
     } finally {
       setLoading(false);
     }
@@ -76,9 +78,6 @@ export const ProductsPage = () => {
   const handleCategoryChange = (categoryId: number | undefined) => {
     const cat = categories.find(c => c.id === categoryId);
     if (cat && cat.has_subcategories) {
-      // The category has subcategories — we need to load them
-      // For now subcategories come embedded in category or we fetch separately
-      // The API may return them with the category list; here we use a simple approach
       setSubcategories([]);
     } else {
       setSubcategories([]);
@@ -103,48 +102,48 @@ export const ProductsPage = () => {
     try {
       if (editing) {
         await productsApi.updateProduct(editing.id, values);
-        message.success('Товар обновлён');
+        message.success(t('product_updated'));
       } else {
         await productsApi.createProduct(values);
-        message.success('Товар создан');
+        message.success(t('product_created'));
       }
       setDrawerOpen(false);
       fetchProducts();
     } catch {
-      message.error('Ошибка сохранения');
+      message.error(t('error_saving'));
     }
   };
 
   const handleDelete = (id: number) => {
     Modal.confirm({
-      title: 'Удалить товар?',
-      content: 'Это действие нельзя отменить.',
-      okText: 'Удалить', cancelText: 'Отмена', okType: 'danger',
+      title: t('delete_product_title'),
+      content: t('delete_product_content'),
+      okText: t('delete'), cancelText: t('cancel'), okType: 'danger',
       onOk: async () => {
-        try { await productsApi.deleteProduct(id); message.success('Товар удалён'); fetchProducts(); }
-        catch { message.error('Ошибка удаления'); }
+        try { await productsApi.deleteProduct(id); message.success(t('product_deleted')); fetchProducts(); }
+        catch { message.error(t('error_deleting')); }
       },
     });
   };
 
   const columns = [
-    { title: 'ID', dataIndex: 'id', key: 'id', width: 60 },
+    { title: t('col_id'), dataIndex: 'id', key: 'id', width: 60 },
     {
-      title: 'Фото', dataIndex: 'image_url', key: 'image_url', width: 80,
+      title: t('col_photo'), dataIndex: 'image_url', key: 'image_url', width: 80,
       render: (url: string) => url ? <Image src={url} width={50} height={50} style={{ objectFit: 'cover' }} /> : '—',
     },
-    { title: 'Название (RU)', dataIndex: 'name_ru', key: 'name_ru', ellipsis: true },
-    { title: 'Бренд', dataIndex: 'brand_name', key: 'brand_name', render: (v: string) => v || '—' },
-    { title: 'Цена', dataIndex: 'price', key: 'price', width: 120, render: (v: number) => formatPrice(v) },
+    { title: t('col_name_ru'), dataIndex: 'name_ru', key: 'name_ru', ellipsis: true },
+    { title: t('col_brand'), dataIndex: 'brand_name', key: 'brand_name', render: (v: string) => v || '—' },
+    { title: t('col_price'), dataIndex: 'price', key: 'price', width: 120, render: (v: number) => formatPrice(v) },
     {
-      title: 'Ст. цена', dataIndex: 'old_price', key: 'old_price', width: 120,
+      title: t('col_old_price'), dataIndex: 'old_price', key: 'old_price', width: 120,
       render: (v: number) => v ? formatPrice(v) : '—',
     },
-    { title: 'Активен', dataIndex: 'is_active', key: 'is_active', width: 80, render: (v: boolean) => v ? 'Да' : 'Нет' },
-    { title: 'Новый', dataIndex: 'is_new', key: 'is_new', width: 70, render: (v: boolean) => v ? 'Да' : 'Нет' },
-    { title: 'Создан', dataIndex: 'created_at', key: 'created_at', width: 140, render: (v: string) => formatDateTime(v) },
+    { title: t('col_active'), dataIndex: 'is_active', key: 'is_active', width: 80, render: (v: boolean) => v ? t('yes') : t('no') },
+    { title: t('col_new'), dataIndex: 'is_new', key: 'is_new', width: 70, render: (v: boolean) => v ? t('yes') : t('no') },
+    { title: t('col_created'), dataIndex: 'created_at', key: 'created_at', width: 140, render: (v: string) => formatDateTime(v) },
     {
-      title: 'Действия', key: 'actions', width: 120,
+      title: t('actions'), key: 'actions', width: 120,
       render: (_: unknown, record: Product) => (
         <Space>
           <Button icon={<EditOutlined />} size="small" onClick={() => openDrawer(record)} />
@@ -157,28 +156,28 @@ export const ProductsPage = () => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-        <h2>Товары</h2>
-        <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>Добавить</Button>
+        <h2>{t('products_title')}</h2>
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>{t('add')}</Button>
       </div>
 
       <Form form={searchForm} layout="inline" style={{ marginBottom: 16 }} onFinish={handleSearch}>
         <Form.Item name="search">
-          <Input placeholder="Поиск..." prefix={<SearchOutlined />} allowClear />
+          <Input placeholder={t('search')} prefix={<SearchOutlined />} allowClear />
         </Form.Item>
         <Form.Item name="category_id">
-          <Select placeholder="Категория" allowClear style={{ width: 180 }}>
+          <Select placeholder={t('search_category_placeholder')} allowClear style={{ width: 180 }}>
             {categories.map(c => <Select.Option key={c.id} value={c.id}>{c.name_ru}</Select.Option>)}
           </Select>
         </Form.Item>
         <Form.Item name="brand_id">
-          <Select placeholder="Бренд" allowClear style={{ width: 160 }}>
+          <Select placeholder={t('search_brand_placeholder')} allowClear style={{ width: 160 }}>
             {brands.map(b => <Select.Option key={b.id} value={b.id}>{b.name}</Select.Option>)}
           </Select>
         </Form.Item>
         <Form.Item>
           <Space>
-            <Button type="primary" htmlType="submit">Фильтр</Button>
-            <Button onClick={handleResetSearch}>Сбросить</Button>
+            <Button type="primary" htmlType="submit">{t('filter')}</Button>
+            <Button onClick={handleResetSearch}>{t('reset')}</Button>
           </Space>
         </Form.Item>
       </Form>
@@ -193,7 +192,7 @@ export const ProductsPage = () => {
           pageSize: pagination.limit,
           total: pagination.total,
           showSizeChanger: true,
-          showTotal: (total) => `Всего: ${total}`,
+          showTotal: (total) => `${t('total_count')} ${total}`,
           onChange: (page, pageSize) => {
             setFilters(prev => ({ ...prev, page, limit: pageSize }));
           },
@@ -201,53 +200,63 @@ export const ProductsPage = () => {
       />
 
       <Drawer
-        title={editing ? 'Редактировать товар' : 'Новый товар'}
+        title={editing ? t('drawer_edit_product') : t('drawer_new_product')}
         width={600}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         extra={
           <Space>
-            <Button onClick={() => setDrawerOpen(false)}>Отмена</Button>
-            <Button type="primary" onClick={handleSubmit}>Сохранить</Button>
+            <Button onClick={() => setDrawerOpen(false)}>{t('cancel')}</Button>
+            <Button type="primary" onClick={handleSubmit}>{t('save')}</Button>
           </Space>
         }
       >
         <Form form={form} layout="vertical">
           <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item name="name_ru" label="Название (RU)" rules={[{ required: true, message: 'Введите название' }]}>
+            <Col span={8}>
+              <Form.Item name="name_ru" label={t('label_name_ru')} rules={[{ required: true, message: t('validation_enter_name') }]}>
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={12}>
-              <Form.Item name="name_tm" label="Название (TM)" rules={[{ required: true, message: 'Введите название' }]}>
+            <Col span={8}>
+              <Form.Item name="name_tm" label={t('label_name_tm')} rules={[{ required: true, message: t('validation_enter_name') }]}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item name="name_en" label={t('label_name_en')}>
                 <Input />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item name="description_ru" label="Описание (RU)">
+            <Col span={8}>
+              <Form.Item name="description_ru" label={t('label_description_ru')}>
                 <Input.TextArea rows={3} />
               </Form.Item>
             </Col>
-            <Col span={12}>
-              <Form.Item name="description_tm" label="Описание (TM)">
+            <Col span={8}>
+              <Form.Item name="description_tm" label={t('label_description_tm')}>
+                <Input.TextArea rows={3} />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item name="description_en" label={t('label_description_en')}>
                 <Input.TextArea rows={3} />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item name="category_id" label="Категория">
-                <Select allowClear placeholder="Выберите" onChange={handleCategoryChange}>
+              <Form.Item name="category_id" label={t('label_category')}>
+                <Select allowClear placeholder={t('select')} onChange={handleCategoryChange}>
                   {categories.map(c => <Select.Option key={c.id} value={c.id}>{c.name_ru}</Select.Option>)}
                 </Select>
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name="subcategory_id" label="Подкатегория">
-                <Select allowClear placeholder="Выберите" disabled={subcategories.length === 0}>
+              <Form.Item name="subcategory_id" label={t('label_subcategory')}>
+                <Select allowClear placeholder={t('select')} disabled={subcategories.length === 0}>
                   {subcategories.map(s => <Select.Option key={s.id} value={s.id}>{s.name_ru}</Select.Option>)}
                 </Select>
               </Form.Item>
@@ -255,56 +264,56 @@ export const ProductsPage = () => {
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item name="brand_id" label="Бренд">
-                <Select allowClear placeholder="Выберите">
+              <Form.Item name="brand_id" label={t('label_brand')}>
+                <Select allowClear placeholder={t('select')}>
                   {brands.map(b => <Select.Option key={b.id} value={b.id}>{b.name}</Select.Option>)}
                 </Select>
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name="barcode" label="Штрихкод">
+              <Form.Item name="barcode" label={t('label_barcode')}>
                 <Input />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={8}>
-              <Form.Item name="price" label="Цена" rules={[{ required: true, message: 'Введите цену' }]}>
+              <Form.Item name="price" label={t('label_price')} rules={[{ required: true, message: t('validation_enter_price') }]}>
                 <InputNumber min={0} step={0.5} style={{ width: '100%' }} />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item name="old_price" label="Старая цена">
+              <Form.Item name="old_price" label={t('label_old_price')}>
                 <InputNumber min={0} step={0.5} style={{ width: '100%' }} />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item name="discount_percent" label="Скидка %">
+              <Form.Item name="discount_percent" label={t('label_discount_percent')}>
                 <InputNumber min={0} max={100} style={{ width: '100%' }} />
               </Form.Item>
             </Col>
           </Row>
-          <Form.Item name="image_url" label="Основное изображение" rules={[{ required: !editing, message: 'Загрузите изображение' }]}>
+          <Form.Item name="image_url" label={t('label_main_image')} rules={[{ required: !editing, message: t('validation_upload_image') }]}>
             <ImageUpload />
           </Form.Item>
           <Row gutter={16}>
             <Col span={8}>
-              <Form.Item name="sort_order" label="Порядок">
+              <Form.Item name="sort_order" label={t('label_sort_order')}>
                 <InputNumber min={0} style={{ width: '100%' }} />
               </Form.Item>
             </Col>
             <Col span={5}>
-              <Form.Item name="is_active" label="Активен" valuePropName="checked">
+              <Form.Item name="is_active" label={t('label_active')} valuePropName="checked">
                 <Switch />
               </Form.Item>
             </Col>
             <Col span={5}>
-              <Form.Item name="is_new" label="Новинка" valuePropName="checked">
+              <Form.Item name="is_new" label={t('label_new')} valuePropName="checked">
                 <Switch />
               </Form.Item>
             </Col>
             <Col span={6}>
-              <Form.Item name="is_discount" label="Со скидкой" valuePropName="checked">
+              <Form.Item name="is_discount" label={t('label_discount')} valuePropName="checked">
                 <Switch />
               </Form.Item>
             </Col>

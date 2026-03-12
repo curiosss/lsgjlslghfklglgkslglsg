@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { Button, Table, Modal, Form, Input, Select, Switch, Space, message } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import * as adminsApi from '../api/admins';
-import { ADMIN_ROLE_LABELS } from '../utils/constants';
+import { ADMIN_ROLE_I18N } from '../utils/constants';
 import { formatDateTime } from '../utils/format';
+import { useTr } from '../i18n';
 import type { Admin } from '../types';
 
 export const AdminsPage = () => {
@@ -12,6 +13,7 @@ export const AdminsPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Admin | null>(null);
   const [form] = Form.useForm();
+  const t = useTr();
 
   const fetchAdmins = async () => {
     setLoading(true);
@@ -19,7 +21,7 @@ export const AdminsPage = () => {
       const { data: resp } = await adminsApi.getAdmins();
       setAdmins(resp.data ?? []);
     } catch {
-      message.error('Ошибка загрузки администраторов');
+      message.error(t('error_loading_admins'));
     } finally {
       setLoading(false);
     }
@@ -42,38 +44,44 @@ export const AdminsPage = () => {
         const updateData: Record<string, unknown> = { ...values };
         if (!updateData.password) delete updateData.password;
         await adminsApi.updateAdmin(editing.id, updateData);
-        message.success('Администратор обновлён');
+        message.success(t('admin_updated'));
       } else {
         await adminsApi.createAdmin(values);
-        message.success('Администратор создан');
+        message.success(t('admin_created'));
       }
       setModalOpen(false);
       fetchAdmins();
     } catch {
-      message.error('Ошибка сохранения');
+      message.error(t('error_saving'));
     }
   };
 
   const handleDelete = (id: number) => {
     Modal.confirm({
-      title: 'Удалить администратора?',
-      okText: 'Удалить', cancelText: 'Отмена', okType: 'danger',
+      title: t('delete_admin_title'),
+      okText: t('delete'), cancelText: t('cancel'), okType: 'danger',
       onOk: async () => {
-        try { await adminsApi.deleteAdmin(id); message.success('Администратор удалён'); fetchAdmins(); }
-        catch { message.error('Ошибка удаления'); }
+        try { await adminsApi.deleteAdmin(id); message.success(t('admin_deleted')); fetchAdmins(); }
+        catch { message.error(t('error_deleting')); }
       },
     });
   };
 
   const columns = [
-    { title: 'ID', dataIndex: 'id', key: 'id', width: 60 },
-    { title: 'Логин', dataIndex: 'username', key: 'username' },
-    { title: 'Имя', dataIndex: 'full_name', key: 'full_name', render: (v: string) => v || '—' },
-    { title: 'Роль', dataIndex: 'role', key: 'role', render: (v: string) => ADMIN_ROLE_LABELS[v] || v },
-    { title: 'Активен', dataIndex: 'is_active', key: 'is_active', width: 100, render: (v: boolean) => v ? 'Да' : 'Нет' },
-    { title: 'Создан', dataIndex: 'created_at', key: 'created_at', render: (v: string) => formatDateTime(v) },
+    { title: t('col_id'), dataIndex: 'id', key: 'id', width: 60 },
+    { title: t('col_login'), dataIndex: 'username', key: 'username' },
+    { title: t('col_fullname'), dataIndex: 'full_name', key: 'full_name', render: (v: string) => v || '—' },
     {
-      title: 'Действия', key: 'actions', width: 120,
+      title: t('col_role'), dataIndex: 'role', key: 'role',
+      render: (v: string) => {
+        const i18nKey = ADMIN_ROLE_I18N[v];
+        return i18nKey ? t(i18nKey) : v;
+      },
+    },
+    { title: t('col_active'), dataIndex: 'is_active', key: 'is_active', width: 100, render: (v: boolean) => v ? t('yes') : t('no') },
+    { title: t('col_created'), dataIndex: 'created_at', key: 'created_at', render: (v: string) => formatDateTime(v) },
+    {
+      title: t('actions'), key: 'actions', width: 120,
       render: (_: unknown, record: Admin) => (
         <Space>
           <Button icon={<EditOutlined />} size="small" onClick={() => openModal(record)} />
@@ -86,29 +94,29 @@ export const AdminsPage = () => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-        <h2>Администраторы</h2>
-        <Button type="primary" icon={<PlusOutlined />} onClick={() => openModal()}>Добавить</Button>
+        <h2>{t('admins_title')}</h2>
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => openModal()}>{t('add')}</Button>
       </div>
       <Table columns={columns} dataSource={admins} rowKey="id" loading={loading} pagination={false} />
-      <Modal title={editing ? 'Редактировать' : 'Новый администратор'} open={modalOpen} onOk={handleSubmit} onCancel={() => setModalOpen(false)} okText="Сохранить" cancelText="Отмена">
+      <Modal title={editing ? t('modal_edit_admin') : t('modal_new_admin')} open={modalOpen} onOk={handleSubmit} onCancel={() => setModalOpen(false)} okText={t('save')} cancelText={t('cancel')}>
         <Form form={form} layout="vertical">
-          <Form.Item name="username" label="Логин" rules={[{ required: true, message: 'Введите логин' }]}>
+          <Form.Item name="username" label={t('label_login')} rules={[{ required: true, message: t('validation_enter_login') }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="password" label="Пароль" rules={editing ? [] : [{ required: true, message: 'Введите пароль' }]}>
-            <Input.Password placeholder={editing ? 'Оставьте пустым, чтобы не менять' : ''} />
+          <Form.Item name="password" label={t('label_password')} rules={editing ? [] : [{ required: true, message: t('validation_enter_password') }]}>
+            <Input.Password placeholder={editing ? t('password_keep_empty') : ''} />
           </Form.Item>
-          <Form.Item name="full_name" label="Полное имя">
+          <Form.Item name="full_name" label={t('label_fullname')}>
             <Input />
           </Form.Item>
-          <Form.Item name="role" label="Роль" rules={[{ required: true }]}>
+          <Form.Item name="role" label={t('label_role')} rules={[{ required: true }]}>
             <Select>
-              <Select.Option value="superadmin">Суперадмин</Select.Option>
-              <Select.Option value="admin">Админ</Select.Option>
-              <Select.Option value="manager">Менеджер</Select.Option>
+              <Select.Option value="superadmin">{t('role_superadmin')}</Select.Option>
+              <Select.Option value="admin">{t('role_admin')}</Select.Option>
+              <Select.Option value="manager">{t('role_manager')}</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name="is_active" label="Активен" valuePropName="checked">
+          <Form.Item name="is_active" label={t('col_active')} valuePropName="checked">
             <Switch />
           </Form.Item>
         </Form>

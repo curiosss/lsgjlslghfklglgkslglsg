@@ -3,6 +3,7 @@ import { Button, Table, Modal, Form, Input, InputNumber, Switch, Space, message,
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import * as brandsApi from '../api/brands';
 import { ImageUpload } from '../components/ImageUpload';
+import { useTr } from '../i18n';
 import type { Brand } from '../types';
 
 export const BrandsPage = () => {
@@ -11,6 +12,7 @@ export const BrandsPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Brand | null>(null);
   const [form] = Form.useForm();
+  const t = useTr();
 
   const fetchBrands = async () => {
     setLoading(true);
@@ -18,7 +20,7 @@ export const BrandsPage = () => {
       const { data: resp } = await brandsApi.getBrands();
       setBrands(resp.data ?? []);
     } catch {
-      message.error('Ошибка загрузки брендов');
+      message.error(t('error_loading_brands'));
     } finally {
       setLoading(false);
     }
@@ -42,51 +44,51 @@ export const BrandsPage = () => {
     try {
       if (editing) {
         await brandsApi.updateBrand(editing.id, values);
-        message.success('Бренд обновлён');
+        message.success(t('brand_updated'));
       } else {
         await brandsApi.createBrand(values);
-        message.success('Бренд создан');
+        message.success(t('brand_created'));
       }
       setModalOpen(false);
       fetchBrands();
     } catch {
-      message.error('Ошибка сохранения');
+      message.error(t('error_saving'));
     }
   };
 
   const handleDelete = (id: number) => {
     Modal.confirm({
-      title: 'Удалить бренд?',
-      content: 'Это действие нельзя отменить.',
-      okText: 'Удалить',
-      cancelText: 'Отмена',
+      title: t('delete_brand_title'),
+      content: t('delete_brand_content'),
+      okText: t('delete'),
+      cancelText: t('cancel'),
       okType: 'danger',
       onOk: async () => {
         try {
           await brandsApi.deleteBrand(id);
-          message.success('Бренд удалён');
+          message.success(t('brand_deleted'));
           fetchBrands();
         } catch {
-          message.error('Ошибка удаления');
+          message.error(t('error_deleting'));
         }
       },
     });
   };
 
   const columns = [
-    { title: 'ID', dataIndex: 'id', key: 'id', width: 60 },
+    { title: t('col_id'), dataIndex: 'id', key: 'id', width: 60 },
     {
-      title: 'Лого', dataIndex: 'logo_url', key: 'logo_url', width: 80,
+      title: t('col_logo'), dataIndex: 'logo_url', key: 'logo_url', width: 80,
       render: (url: string) => url ? <Image src={url} width={40} height={40} style={{ objectFit: 'contain' }} /> : '—',
     },
-    { title: 'Название', dataIndex: 'name', key: 'name' },
-    { title: 'Порядок', dataIndex: 'sort_order', key: 'sort_order', width: 100 },
+    { title: t('col_name'), dataIndex: 'name', key: 'name' },
+    { title: t('label_sort_order'), dataIndex: 'sort_order', key: 'sort_order', width: 100 },
     {
-      title: 'Активен', dataIndex: 'is_active', key: 'is_active', width: 100,
-      render: (v: boolean) => v ? 'Да' : 'Нет',
+      title: t('col_active'), dataIndex: 'is_active', key: 'is_active', width: 100,
+      render: (v: boolean) => v ? t('yes') : t('no'),
     },
     {
-      title: 'Действия', key: 'actions', width: 120,
+      title: t('actions'), key: 'actions', width: 120,
       render: (_: unknown, record: Brand) => (
         <Space>
           <Button icon={<EditOutlined />} size="small" onClick={() => openModal(record)} />
@@ -99,29 +101,29 @@ export const BrandsPage = () => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-        <h2>Бренды</h2>
-        <Button type="primary" icon={<PlusOutlined />} onClick={() => openModal()}>Добавить</Button>
+        <h2>{t('brands_title')}</h2>
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => openModal()}>{t('add')}</Button>
       </div>
       <Table columns={columns} dataSource={brands} rowKey="id" loading={loading} pagination={false} />
       <Modal
-        title={editing ? 'Редактировать бренд' : 'Новый бренд'}
+        title={editing ? t('modal_edit_brand') : t('modal_new_brand')}
         open={modalOpen}
         onOk={handleSubmit}
         onCancel={() => setModalOpen(false)}
-        okText="Сохранить"
-        cancelText="Отмена"
+        okText={t('save')}
+        cancelText={t('cancel')}
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="name" label="Название" rules={[{ required: true, message: 'Введите название' }]}>
+          <Form.Item name="name" label={t('label_name')} rules={[{ required: true, message: t('validation_enter_name') }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="logo_url" label="Логотип">
+          <Form.Item name="logo_url" label={t('label_logo')}>
             <ImageUpload />
           </Form.Item>
-          <Form.Item name="sort_order" label="Порядок сортировки">
+          <Form.Item name="sort_order" label={t('label_sort_order_full')}>
             <InputNumber min={0} style={{ width: '100%' }} />
           </Form.Item>
-          <Form.Item name="is_active" label="Активен" valuePropName="checked">
+          <Form.Item name="is_active" label={t('col_active')} valuePropName="checked">
             <Switch />
           </Form.Item>
         </Form>

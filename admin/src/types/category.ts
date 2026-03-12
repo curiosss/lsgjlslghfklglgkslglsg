@@ -2,6 +2,7 @@ export interface Category {
   id: number;
   name_ru: string;
   name_tm: string;
+  name_en?: string;
   image_url?: string;
   has_subcategories: boolean;
   sort_order: number;
@@ -14,6 +15,7 @@ export interface SubCategory {
   parent_id: number;
   name_ru: string;
   name_tm: string;
+  name_en?: string;
   image_url?: string;
   sort_order: number;
   is_active: boolean;
@@ -22,6 +24,7 @@ export interface SubCategory {
 export interface CreateCategoryRequest {
   name_ru: string;
   name_tm: string;
+  name_en?: string;
   image_url?: string;
   sort_order: number;
   is_active?: boolean;
@@ -30,6 +33,7 @@ export interface CreateCategoryRequest {
 export interface UpdateCategoryRequest {
   name_ru?: string;
   name_tm?: string;
+  name_en?: string;
   image_url?: string;
   sort_order?: number;
   is_active?: boolean;
@@ -39,6 +43,7 @@ export interface CreateSubCategoryRequest {
   parent_id: number;
   name_ru: string;
   name_tm: string;
+  name_en?: string;
   image_url?: string;
   sort_order: number;
   is_active?: boolean;
@@ -47,6 +52,7 @@ export interface CreateSubCategoryRequest {
 export interface UpdateSubCategoryRequest {
   name_ru?: string;
   name_tm?: string;
+  name_en?: string;
   image_url?: string;
   sort_order?: number;
   is_active?: boolean;

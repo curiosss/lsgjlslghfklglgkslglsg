@@ -37,13 +37,13 @@ func (r *DeliveryZoneRepo) GetByID(ctx context.Context, id int) (*models.Deliver
 }
 
 func (r *DeliveryZoneRepo) Create(ctx context.Context, z *models.DeliveryZone) error {
-	query := `INSERT INTO delivery_zones (name_ru, name_tm, delivery_price, is_active) VALUES ($1, $2, $3, $4) RETURNING id`
-	return r.db.QueryRowxContext(ctx, query, z.NameRu, z.NameTm, z.DeliveryPrice, z.IsActive).Scan(&z.ID)
+	query := `INSERT INTO delivery_zones (name_ru, name_tm, name_en, delivery_price, is_active) VALUES ($1, $2, $3, $4, $5) RETURNING id`
+	return r.db.QueryRowxContext(ctx, query, z.NameRu, z.NameTm, z.NameEn, z.DeliveryPrice, z.IsActive).Scan(&z.ID)
 }
 
 func (r *DeliveryZoneRepo) Update(ctx context.Context, z *models.DeliveryZone) error {
-	query := `UPDATE delivery_zones SET name_ru=$1, name_tm=$2, delivery_price=$3, is_active=$4 WHERE id=$5`
-	_, err := r.db.ExecContext(ctx, query, z.NameRu, z.NameTm, z.DeliveryPrice, z.IsActive, z.ID)
+	query := `UPDATE delivery_zones SET name_ru=$1, name_tm=$2, name_en=$3, delivery_price=$4, is_active=$5 WHERE id=$6`
+	_, err := r.db.ExecContext(ctx, query, z.NameRu, z.NameTm, z.NameEn, z.DeliveryPrice, z.IsActive, z.ID)
 	return err
 }
 

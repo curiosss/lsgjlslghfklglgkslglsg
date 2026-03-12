@@ -102,7 +102,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             builder: (context, _) {
                               return GestureDetector(
                                 onTap: () {
-                                  appProvider.setLocale(appProvider.isRussian ? 'tk' : 'ru');
+                                  if (appProvider.isRussian) {
+                                    appProvider.setLocale('tk');
+                                  } else if (appProvider.isTurkmen) {
+                                    appProvider.setLocale('en');
+                                  } else {
+                                    appProvider.setLocale('ru');
+                                  }
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -111,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
-                                    appProvider.isRussian ? 'RU' : 'TM',
+                                    appProvider.isRussian ? 'RU' : appProvider.isTurkmen ? 'TM' : 'EN',
                                     style: theme.textTheme.labelMedium?.copyWith(
                                       color: theme.colorScheme.onPrimary,
                                       fontWeight: FontWeight.bold,

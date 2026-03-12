@@ -40,7 +40,7 @@ func (r *ProductRepo) GetAll(ctx context.Context, filters models.ProductFilters,
 		argIdx++
 	}
 	if filters.Search != "" {
-		where = append(where, fmt.Sprintf("(p.name_ru ILIKE $%d OR p.name_tm ILIKE $%d)", argIdx, argIdx))
+		where = append(where, fmt.Sprintf("(p.name_ru ILIKE $%d OR p.name_tm ILIKE $%d OR p.name_en ILIKE $%d)", argIdx, argIdx, argIdx))
 		args = append(args, "%"+filters.Search+"%")
 		argIdx++
 	}
@@ -106,7 +106,7 @@ func (r *ProductRepo) AdminGetAll(ctx context.Context, filters models.ProductFil
 		argIdx++
 	}
 	if filters.Search != "" {
-		where = append(where, fmt.Sprintf("(p.name_ru ILIKE $%d OR p.name_tm ILIKE $%d)", argIdx, argIdx))
+		where = append(where, fmt.Sprintf("(p.name_ru ILIKE $%d OR p.name_tm ILIKE $%d OR p.name_en ILIKE $%d)", argIdx, argIdx, argIdx))
 		args = append(args, "%"+filters.Search+"%")
 		argIdx++
 	}
@@ -165,12 +165,12 @@ func (r *ProductRepo) GetRelated(ctx context.Context, productID int, limit int) 
 }
 
 func (r *ProductRepo) Create(ctx context.Context, p *models.Product) error {
-	query := `INSERT INTO products (name_ru, name_tm, brand_id, category_id, subcategory_id, description_ru, description_tm,
+	query := `INSERT INTO products (name_ru, name_tm, name_en, brand_id, category_id, subcategory_id, description_ru, description_tm, description_en,
 		price, old_price, discount_percent, image_url, images, barcode, is_active, is_new, is_discount, sort_order)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING id, created_at, updated_at`
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19) RETURNING id, created_at, updated_at`
 	return r.db.QueryRowxContext(ctx, query,
-		p.NameRu, p.NameTm, p.BrandID, p.CategoryID, p.SubCategoryID,
-		p.DescriptionRu, p.DescriptionTm,
+		p.NameRu, p.NameTm, p.NameEn, p.BrandID, p.CategoryID, p.SubCategoryID,
+		p.DescriptionRu, p.DescriptionTm, p.DescriptionEn,
 		p.Price, p.OldPrice, p.DiscountPercent,
 		p.ImageUrl, p.Images, p.Barcode,
 		p.IsActive, p.IsNew, p.IsDiscount, p.SortOrder,
@@ -178,13 +178,13 @@ func (r *ProductRepo) Create(ctx context.Context, p *models.Product) error {
 }
 
 func (r *ProductRepo) Update(ctx context.Context, p *models.Product) error {
-	query := `UPDATE products SET name_ru=$1, name_tm=$2, brand_id=$3, category_id=$4, subcategory_id=$5,
-		description_ru=$6, description_tm=$7, price=$8, old_price=$9, discount_percent=$10,
-		image_url=$11, images=$12, barcode=$13, is_active=$14, is_new=$15, is_discount=$16, sort_order=$17,
-		updated_at=NOW() WHERE id=$18`
+	query := `UPDATE products SET name_ru=$1, name_tm=$2, name_en=$3, brand_id=$4, category_id=$5, subcategory_id=$6,
+		description_ru=$7, description_tm=$8, description_en=$9, price=$10, old_price=$11, discount_percent=$12,
+		image_url=$13, images=$14, barcode=$15, is_active=$16, is_new=$17, is_discount=$18, sort_order=$19,
+		updated_at=NOW() WHERE id=$20`
 	_, err := r.db.ExecContext(ctx, query,
-		p.NameRu, p.NameTm, p.BrandID, p.CategoryID, p.SubCategoryID,
-		p.DescriptionRu, p.DescriptionTm,
+		p.NameRu, p.NameTm, p.NameEn, p.BrandID, p.CategoryID, p.SubCategoryID,
+		p.DescriptionRu, p.DescriptionTm, p.DescriptionEn,
 		p.Price, p.OldPrice, p.DiscountPercent,
 		p.ImageUrl, p.Images, p.Barcode,
 		p.IsActive, p.IsNew, p.IsDiscount, p.SortOrder, p.ID)

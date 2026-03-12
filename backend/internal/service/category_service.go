@@ -76,6 +76,7 @@ func (s *CategoryService) CreateCategory(ctx context.Context, req models.CreateC
 	cat := &models.Category{
 		NameRu:    req.NameRu,
 		NameTm:    req.NameTm,
+		NameEn:    req.NameEn,
 		ImageUrl:  req.ImageUrl,
 		SortOrder: req.SortOrder,
 		IsActive:  isActive,
@@ -96,6 +97,9 @@ func (s *CategoryService) UpdateCategory(ctx context.Context, id int, req models
 	}
 	if req.NameTm != nil {
 		cat.NameTm = *req.NameTm
+	}
+	if req.NameEn != nil {
+		cat.NameEn = *req.NameEn
 	}
 	if req.ImageUrl != nil {
 		cat.ImageUrl = req.ImageUrl
@@ -127,6 +131,7 @@ func (s *CategoryService) CreateSubCategory(ctx context.Context, req models.Crea
 		ParentID:  req.ParentID,
 		NameRu:    req.NameRu,
 		NameTm:    req.NameTm,
+		NameEn:    req.NameEn,
 		ImageUrl:  req.ImageUrl,
 		SortOrder: req.SortOrder,
 		IsActive:  isActive,
@@ -148,6 +153,9 @@ func (s *CategoryService) UpdateSubCategory(ctx context.Context, id int, req mod
 	}
 	if req.NameTm != nil {
 		sub.NameTm = *req.NameTm
+	}
+	if req.NameEn != nil {
+		sub.NameEn = *req.NameEn
 	}
 	if req.ImageUrl != nil {
 		sub.ImageUrl = req.ImageUrl

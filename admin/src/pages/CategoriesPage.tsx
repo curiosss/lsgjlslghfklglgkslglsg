@@ -3,6 +3,7 @@ import { Button, Table, Modal, Form, Input, InputNumber, Switch, Space, message,
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import * as categoriesApi from '../api/categories';
 import { ImageUpload } from '../components/ImageUpload';
+import { useTr } from '../i18n';
 import type { Category, SubCategory } from '../types';
 
 export const CategoriesPage = () => {
@@ -11,6 +12,7 @@ export const CategoriesPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Category | null>(null);
   const [form] = Form.useForm();
+  const t = useTr();
 
   // Subcategory state
   const [subModalOpen, setSubModalOpen] = useState(false);
@@ -28,7 +30,7 @@ export const CategoriesPage = () => {
       const { data: resp } = await categoriesApi.getCategories();
       setCategories(resp.data ?? []);
     } catch {
-      message.error('Ошибка загрузки категорий');
+      message.error(t('error_loading_categories'));
     } finally {
       setLoading(false);
     }
@@ -50,26 +52,26 @@ export const CategoriesPage = () => {
     try {
       if (editing) {
         await categoriesApi.updateCategory(editing.id, values);
-        message.success('Категория обновлена');
+        message.success(t('category_updated'));
       } else {
         await categoriesApi.createCategory(values);
-        message.success('Категория создана');
+        message.success(t('category_created'));
       }
       setModalOpen(false);
       fetchCategories();
     } catch {
-      message.error('Ошибка сохранения');
+      message.error(t('error_saving'));
     }
   };
 
   const handleDelete = (id: number) => {
     Modal.confirm({
-      title: 'Удалить категорию?',
-      content: 'Все подкатегории также будут удалены.',
-      okText: 'Удалить', cancelText: 'Отмена', okType: 'danger',
+      title: t('delete_category_title'),
+      content: t('delete_category_content'),
+      okText: t('delete'), cancelText: t('cancel'), okType: 'danger',
       onOk: async () => {
-        try { await categoriesApi.deleteCategory(id); message.success('Категория удалена'); fetchCategories(); }
-        catch { message.error('Ошибка удаления'); }
+        try { await categoriesApi.deleteCategory(id); message.success(t('category_deleted')); fetchCategories(); }
+        catch { message.error(t('error_deleting')); }
       },
     });
   };
@@ -89,42 +91,42 @@ export const CategoriesPage = () => {
     try {
       if (editingSub) {
         await categoriesApi.updateSubCategory(editingSub.id, values);
-        message.success('Подкатегория обновлена');
+        message.success(t('subcategory_updated'));
       } else {
         await categoriesApi.createSubCategory({ ...values, parent_id: subParentId! });
-        message.success('Подкатегория создана');
+        message.success(t('subcategory_created'));
       }
       setSubModalOpen(false);
       fetchCategories();
     } catch {
-      message.error('Ошибка сохранения');
+      message.error(t('error_saving'));
     }
   };
 
   const handleSubDelete = (id: number) => {
     Modal.confirm({
-      title: 'Удалить подкатегорию?',
-      okText: 'Удалить', cancelText: 'Отмена', okType: 'danger',
+      title: t('delete_subcategory_title'),
+      okText: t('delete'), cancelText: t('cancel'), okType: 'danger',
       onOk: async () => {
-        try { await categoriesApi.deleteSubCategory(id); message.success('Подкатегория удалена'); fetchCategories(); }
-        catch { message.error('Ошибка удаления'); }
+        try { await categoriesApi.deleteSubCategory(id); message.success(t('subcategory_deleted')); fetchCategories(); }
+        catch { message.error(t('error_deleting')); }
       },
     });
   };
 
   // --- Subcategory columns ---
   const subColumns = [
-    { title: 'ID', dataIndex: 'id', key: 'id', width: 60 },
+    { title: t('col_id'), dataIndex: 'id', key: 'id', width: 60 },
     {
-      title: 'Фото', dataIndex: 'image_url', key: 'image_url', width: 80,
+      title: t('col_photo'), dataIndex: 'image_url', key: 'image_url', width: 80,
       render: (url: string) => url ? <Image src={url} width={40} height={40} style={{ objectFit: 'contain' }} /> : '—',
     },
-    { title: 'Название (RU)', dataIndex: 'name_ru', key: 'name_ru' },
-    { title: 'Название (TM)', dataIndex: 'name_tm', key: 'name_tm' },
-    { title: 'Порядок', dataIndex: 'sort_order', key: 'sort_order', width: 100 },
-    { title: 'Активна', dataIndex: 'is_active', key: 'is_active', width: 80, render: (v: boolean) => v ? 'Да' : 'Нет' },
+    { title: t('col_name_ru'), dataIndex: 'name_ru', key: 'name_ru' },
+    { title: t('col_name_tm'), dataIndex: 'name_tm', key: 'name_tm' },
+    { title: t('label_sort_order'), dataIndex: 'sort_order', key: 'sort_order', width: 100 },
+    { title: t('col_active_f'), dataIndex: 'is_active', key: 'is_active', width: 80, render: (v: boolean) => v ? t('yes') : t('no') },
     {
-      title: 'Действия', key: 'actions', width: 120,
+      title: t('actions'), key: 'actions', width: 120,
       render: (_: unknown, record: SubCategory) => (
         <Space>
           <Button icon={<EditOutlined />} size="small" onClick={() => openSubModal(record.parent_id, record)} />
@@ -136,22 +138,22 @@ export const CategoriesPage = () => {
 
   // --- Main columns ---
   const columns = [
-    { title: 'ID', dataIndex: 'id', key: 'id', width: 60 },
+    { title: t('col_id'), dataIndex: 'id', key: 'id', width: 60 },
     {
-      title: 'Фото', dataIndex: 'image_url', key: 'image_url', width: 80,
+      title: t('col_photo'), dataIndex: 'image_url', key: 'image_url', width: 80,
       render: (url: string) => url ? <Image src={url} width={40} height={40} style={{ objectFit: 'contain' }} /> : '—',
     },
-    { title: 'Название (RU)', dataIndex: 'name_ru', key: 'name_ru' },
-    { title: 'Название (TM)', dataIndex: 'name_tm', key: 'name_tm' },
-    { title: 'Подкатегории', dataIndex: 'has_subcategories', key: 'has_subcategories', width: 120, render: (v: boolean) => v ? 'Да' : 'Нет' },
-    { title: 'Порядок', dataIndex: 'sort_order', key: 'sort_order', width: 100 },
-    { title: 'Активна', dataIndex: 'is_active', key: 'is_active', width: 80, render: (v: boolean) => v ? 'Да' : 'Нет' },
+    { title: t('col_name_ru'), dataIndex: 'name_ru', key: 'name_ru' },
+    { title: t('col_name_tm'), dataIndex: 'name_tm', key: 'name_tm' },
+    { title: t('col_subcategories'), dataIndex: 'has_subcategories', key: 'has_subcategories', width: 120, render: (v: boolean) => v ? t('yes') : t('no') },
+    { title: t('label_sort_order'), dataIndex: 'sort_order', key: 'sort_order', width: 100 },
+    { title: t('col_active_f'), dataIndex: 'is_active', key: 'is_active', width: 80, render: (v: boolean) => v ? t('yes') : t('no') },
     {
-      title: 'Действия', key: 'actions', width: 180,
+      title: t('actions'), key: 'actions', width: 180,
       render: (_: unknown, record: Category) => (
         <Space>
           {record.has_subcategories && (
-            <Button icon={<PlusOutlined />} size="small" onClick={() => openSubModal(record.id)}>Подкат.</Button>
+            <Button icon={<PlusOutlined />} size="small" onClick={() => openSubModal(record.id)}>{t('subcat_short')}</Button>
           )}
           <Button icon={<EditOutlined />} size="small" onClick={() => openModal(record)} />
           <Button icon={<DeleteOutlined />} size="small" danger onClick={() => handleDelete(record.id)} />
@@ -171,7 +173,7 @@ export const CategoriesPage = () => {
         rowKey="id"
         pagination={false}
         size="small"
-        locale={{ emptyText: 'Нет подкатегорий' }}
+        locale={{ emptyText: t('no_subcategories') }}
       />
     );
   };
@@ -179,8 +181,8 @@ export const CategoriesPage = () => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-        <h2>Категории</h2>
-        <Button type="primary" icon={<PlusOutlined />} onClick={() => openModal()}>Добавить</Button>
+        <h2>{t('categories_title')}</h2>
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => openModal()}>{t('add')}</Button>
       </div>
 
       <Table
@@ -205,27 +207,30 @@ export const CategoriesPage = () => {
 
       {/* Category Modal */}
       <Modal
-        title={editing ? 'Редактировать категорию' : 'Новая категория'}
+        title={editing ? t('modal_edit_category') : t('modal_new_category')}
         open={modalOpen}
         onOk={handleSubmit}
         onCancel={() => setModalOpen(false)}
-        okText="Сохранить"
-        cancelText="Отмена"
+        okText={t('save')}
+        cancelText={t('cancel')}
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="name_ru" label="Название (RU)" rules={[{ required: true, message: 'Введите название' }]}>
+          <Form.Item name="name_ru" label={t('label_name_ru')} rules={[{ required: true, message: t('validation_enter_name') }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="name_tm" label="Название (TM)" rules={[{ required: true, message: 'Введите название' }]}>
+          <Form.Item name="name_tm" label={t('label_name_tm')} rules={[{ required: true, message: t('validation_enter_name') }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="image_url" label="Изображение">
+          <Form.Item name="name_en" label={t('label_name_en')}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="image_url" label={t('label_image')}>
             <ImageUpload />
           </Form.Item>
-          <Form.Item name="sort_order" label="Порядок сортировки">
+          <Form.Item name="sort_order" label={t('label_sort_order_full')}>
             <InputNumber min={0} style={{ width: '100%' }} />
           </Form.Item>
-          <Form.Item name="is_active" label="Активна" valuePropName="checked">
+          <Form.Item name="is_active" label={t('col_active_f')} valuePropName="checked">
             <Switch />
           </Form.Item>
         </Form>
@@ -233,27 +238,30 @@ export const CategoriesPage = () => {
 
       {/* Subcategory Modal */}
       <Modal
-        title={editingSub ? 'Редактировать подкатегорию' : 'Новая подкатегория'}
+        title={editingSub ? t('modal_edit_subcategory') : t('modal_new_subcategory')}
         open={subModalOpen}
         onOk={handleSubSubmit}
         onCancel={() => setSubModalOpen(false)}
-        okText="Сохранить"
-        cancelText="Отмена"
+        okText={t('save')}
+        cancelText={t('cancel')}
       >
         <Form form={subForm} layout="vertical">
-          <Form.Item name="name_ru" label="Название (RU)" rules={[{ required: true, message: 'Введите название' }]}>
+          <Form.Item name="name_ru" label={t('label_name_ru')} rules={[{ required: true, message: t('validation_enter_name') }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="name_tm" label="Название (TM)" rules={[{ required: true, message: 'Введите название' }]}>
+          <Form.Item name="name_tm" label={t('label_name_tm')} rules={[{ required: true, message: t('validation_enter_name') }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="image_url" label="Изображение">
+          <Form.Item name="name_en" label={t('label_name_en')}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="image_url" label={t('label_image')}>
             <ImageUpload />
           </Form.Item>
-          <Form.Item name="sort_order" label="Порядок сортировки">
+          <Form.Item name="sort_order" label={t('label_sort_order_full')}>
             <InputNumber min={0} style={{ width: '100%' }} />
           </Form.Item>
-          <Form.Item name="is_active" label="Активна" valuePropName="checked">
+          <Form.Item name="is_active" label={t('col_active_f')} valuePropName="checked">
             <Switch />
           </Form.Item>
         </Form>

@@ -3,7 +3,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-type Locale = 'ru' | 'tm';
+type Locale = 'ru' | 'tm' | 'en';
 
 interface LocaleState {
   locale: Locale;
@@ -26,7 +26,9 @@ export const useLocaleStore = create<LocaleState>()(
         set({ locale });
       },
       toggleLocale: () => {
-        const next = get().locale === 'ru' ? 'tm' : 'ru';
+        const order: Locale[] = ['ru', 'tm', 'en'];
+        const idx = order.indexOf(get().locale);
+        const next = order[(idx + 1) % order.length];
         get().setLocale(next);
       },
     }),

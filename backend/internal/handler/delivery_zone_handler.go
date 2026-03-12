@@ -23,7 +23,7 @@ func NewDeliveryZoneHandler(service *service.DeliveryZoneService) *DeliveryZoneH
 // @Description  Get all active delivery zones (public)
 // @Tags         Delivery Zones
 // @Produce      json
-// @Param        lang  query     string  false  "Language (ru or tm)"  default(ru)
+// @Param        lang  query     string  false  "Language (ru, tm, or en)"  default(ru)
 // @Success      200   {object}  models.ApiResponse{data=[]models.DeliveryZoneResponse}
 // @Failure      500   {object}  models.ApiResponse
 // @Router       /delivery-zones [get]

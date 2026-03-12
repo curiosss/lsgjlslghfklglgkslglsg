@@ -10,11 +10,13 @@ type Product struct {
 	ID              int            `json:"id" db:"id"`
 	NameRu          string         `json:"name_ru" db:"name_ru"`
 	NameTm          string         `json:"name_tm" db:"name_tm"`
+	NameEn          string         `json:"name_en" db:"name_en"`
 	BrandID         *int           `json:"brand_id" db:"brand_id"`
 	CategoryID      *int           `json:"category_id" db:"category_id"`
 	SubCategoryID   *int           `json:"subcategory_id" db:"subcategory_id"`
 	DescriptionRu   *string        `json:"description_ru" db:"description_ru"`
 	DescriptionTm   *string        `json:"description_tm" db:"description_tm"`
+	DescriptionEn   *string        `json:"description_en" db:"description_en"`
 	Price           float64        `json:"price" db:"price"`
 	OldPrice        *float64       `json:"old_price" db:"old_price"`
 	DiscountPercent *int           `json:"discount_percent" db:"discount_percent"`
@@ -62,11 +64,13 @@ type ProductFilters struct {
 type CreateProductRequest struct {
 	NameRu          string   `json:"name_ru" validate:"required,min=1,max=500"`
 	NameTm          string   `json:"name_tm" validate:"required,min=1,max=500"`
+	NameEn          string   `json:"name_en" validate:"omitempty,max=500"`
 	BrandID         *int     `json:"brand_id"`
 	CategoryID      *int     `json:"category_id"`
 	SubCategoryID   *int     `json:"subcategory_id"`
 	DescriptionRu   *string  `json:"description_ru"`
 	DescriptionTm   *string  `json:"description_tm"`
+	DescriptionEn   *string  `json:"description_en"`
 	Price           float64  `json:"price" validate:"required,gt=0"`
 	OldPrice        *float64 `json:"old_price" validate:"omitempty,gt=0"`
 	DiscountPercent *int     `json:"discount_percent"`
@@ -82,11 +86,13 @@ type CreateProductRequest struct {
 type UpdateProductRequest struct {
 	NameRu          *string  `json:"name_ru" validate:"omitempty,min=1,max=500"`
 	NameTm          *string  `json:"name_tm" validate:"omitempty,min=1,max=500"`
+	NameEn          *string  `json:"name_en" validate:"omitempty,max=500"`
 	BrandID         *int     `json:"brand_id"`
 	CategoryID      *int     `json:"category_id"`
 	SubCategoryID   *int     `json:"subcategory_id"`
 	DescriptionRu   *string  `json:"description_ru"`
 	DescriptionTm   *string  `json:"description_tm"`
+	DescriptionEn   *string  `json:"description_en"`
 	Price           *float64 `json:"price" validate:"omitempty,gt=0"`
 	OldPrice        *float64 `json:"old_price"`
 	DiscountPercent *int     `json:"discount_percent"`
@@ -106,6 +112,13 @@ func (p *Product) ToResponse(lang string) ProductResponse {
 		name = p.NameTm
 		if p.DescriptionTm != nil {
 			description = p.DescriptionTm
+		}
+	} else if lang == "en" {
+		if p.NameEn != "" {
+			name = p.NameEn
+		}
+		if p.DescriptionEn != nil {
+			description = p.DescriptionEn
 		}
 	}
 

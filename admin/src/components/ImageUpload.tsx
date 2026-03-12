@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Upload, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadFile, deleteFile } from '../api/upload';
+import { useTr } from '../i18n';
 import type { UploadFile } from 'antd/es/upload';
 import type { UploadRequestOption } from '@rc-component/upload/lib/interface';
 
@@ -12,6 +13,7 @@ interface ImageUploadProps {
 
 export const ImageUpload = ({ value, onChange }: ImageUploadProps) => {
   const [loading, setLoading] = useState(false);
+  const t = useTr();
 
   const fileList: UploadFile[] = value
     ? [{ uid: '-1', name: 'image', status: 'done', url: value }]
@@ -24,10 +26,10 @@ export const ImageUpload = ({ value, onChange }: ImageUploadProps) => {
       const { data: resp } = await uploadFile(file as File);
       if (resp.data) {
         onChange?.(resp.data.url);
-        message.success('Файл загружен');
+        message.success(t('upload_success'));
       }
     } catch {
-      message.error('Ошибка загрузки файла');
+      message.error(t('upload_error'));
     } finally {
       setLoading(false);
     }
@@ -56,7 +58,7 @@ export const ImageUpload = ({ value, onChange }: ImageUploadProps) => {
       {!value && (
         <div>
           <PlusOutlined spin={loading} />
-          <div style={{ marginTop: 8 }}>Загрузить</div>
+          <div style={{ marginTop: 8 }}>{t('upload')}</div>
         </div>
       )}
     </Upload>

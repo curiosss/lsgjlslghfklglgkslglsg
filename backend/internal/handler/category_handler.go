@@ -25,7 +25,7 @@ func NewCategoryHandler(service *service.CategoryService) *CategoryHandler {
 // @Description  Get all active categories with subcategories (public)
 // @Tags         Categories
 // @Produce      json
-// @Param        lang  query     string  false  "Language (ru or tm)"  default(ru)
+// @Param        lang  query     string  false  "Language (ru, tm, or en)"  default(ru)
 // @Success      200   {object}  models.ApiResponse{data=[]models.CategoryResponse}
 // @Failure      500   {object}  models.ApiResponse
 // @Router       /categories [get]
@@ -45,7 +45,7 @@ func (h *CategoryHandler) GetAll(c *gin.Context) {
 // @Tags         Categories
 // @Produce      json
 // @Param        id    path      int     true   "Category ID"
-// @Param        lang  query     string  false  "Language (ru or tm)"  default(ru)
+// @Param        lang  query     string  false  "Language (ru, tm, or en)"  default(ru)
 // @Success      200   {object}  models.ApiResponse{data=[]models.SubCategoryResponse}
 // @Failure      400   {object}  models.ApiResponse
 // @Failure      500   {object}  models.ApiResponse

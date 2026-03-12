@@ -14,7 +14,9 @@
       "Bash(cd C:/Users/Begench/Desktop/commerce/admin && npm run build 2>&1)",
       "Bash(cd C:/Users/Begench/Desktop/commerce/web_client && npm install && npm install react-router-dom axios zustand lucide-react react-helmet-async swiper dayjs 2>&1)",
       "Bash(cd /c/Users/Begench/Desktop/commerce/web_client && npm run build 2>&1)",
-      "Bash(cd /c/Users/Begench/Desktop/commerce && docker compose up --build 2>&1)"
+      "Bash(cd /c/Users/Begench/Desktop/commerce && docker compose up --build 2>&1)",
+      "Bash(cd /c/Users/Begench/Desktop/commerce/web_client && find ./src -type f -name \"*.ts\" -o -name \"*.tsx\" | xargs grep -l \"i18n\\\\|locale\\\\|tr\\\\|useTr\" 2>/dev/null | head -10)",
+      "Bash(flutter gen-l10n:*)"
     ]
   }
 }
