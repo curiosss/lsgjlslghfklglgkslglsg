@@ -1,0 +1,102 @@
+{
+  "@@locale": "ru",
+
+  "home": "Главная",
+  "categories": "Категории",
+  "cart": "Корзина",
+  "favorites": "Избранное",
+  "orders": "Заказы",
+
+  "search": "Поиск",
+  "newArrivals": "Новинки",
+  "discounts": "Скидки",
+  "addToCart": "В корзину",
+  "pieces": "шт",
+
+  "brands": "Бренды",
+  "searchBrand": "Поиск",
+
+  "emptyCart": "Ваша корзина пуста",
+  "emptyCartSubtitle": "Добавьте товары в корзину\nчтобы сделать заказ",
+  "clearCart": "Очистить корзину",
+  "checkout": "Оформить заказ",
+
+  "emptyFavorites": "Ваш список избранных\nтоваров пуст",
+  "emptyFavoritesSubtitle": "Добавьте товары в список избранных\nчтобы сохранить их на устройстве",
+
+  "orderHistory": "История заказов",
+  "delivery": "Доставка",
+  "pickup": "Самовывоз",
+  "allOrders": "Все",
+  "newOrders": "Новые",
+  "confirmed": "Подтвержден",
+  "shipped": "Отправлен",
+  "delivered": "Доставлен",
+  "cancelled": "Отменен",
+  "noResults": "По вашему запросу ничего\nне найдено",
+  "orderNumber": "Заказ",
+  "items": "товар(ов)",
+  "total": "Итого",
+
+  "orderDelivery": "Заказ - доставка",
+  "orderType": "Вид заказа",
+  "fillFields": "Заполните поля",
+  "fullName": "Полное Имя",
+  "phone": "Номер телефона",
+  "address": "Адрес",
+  "note": "Заметка",
+  "cartTotal": "Сумма корзины:",
+  "deliveryFee": "Стоимость доставки:",
+  "placeOrder": "Заказать",
+  "fieldRequired": "Поле не должно быть пустым",
+  "phoneFieldRequired": "Поле \"Номер телефона\" не должно быть пустым",
+  "nameFieldRequired": "Поле \"Полное Имя\" не должно быть пустым",
+  "addressFieldRequired": "Поле \"Адрес\" не должно быть пустым",
+  "selectDate": "Выберите дату",
+  "selectTimeSlot": "Выберите время",
+
+  "lowPrice": "Низкие цены",
+  "highPrice": "Высокие цены",
+  "totalCount": "Всего:\n{count} товар(ов)",
+  "@totalCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "barcode": "Штрих-код",
+  "brand": "Бренд",
+  "relatedProducts": "Другие товары",
+
+  "profile": "Профиль",
+  "theme": "Тема оформления",
+  "language": "Язык / Dil",
+  "contactUs": "Связаться с нами",
+  "about": "О приложении",
+  "lightTheme": "Светлая",
+  "darkTheme": "Тёмная",
+  "systemTheme": "Системная",
+  "selectLanguage": "Выберите язык",
+  "russian": "Русский",
+  "turkmen": "Türkmen",
+  "appVersion": "v1.0.0",
+
+  "manat": "м.",
+  "cancel": "Отмена",
+  "confirm": "Подтвердить",
+  "delete": "Удалить",
+  "clearCartConfirm": "Очистить корзину?",
+  "orderSuccess": "Заказ успешно оформлен!",
+
+  "priceFormat": "{price} м.",
+  "@priceFormat": {
+    "placeholders": {
+      "price": {"type": "String"}
+    }
+  },
+  "itemCount": "{count} шт",
+  "@itemCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  }
+}
