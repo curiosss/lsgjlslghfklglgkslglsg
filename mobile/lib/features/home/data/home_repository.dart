@@ -28,22 +28,32 @@ class HomeRepository {
 
   Future<HomeData> getHomeData() async {
     final response = await _client.get(ApiEndpoints.home);
-    final data = response.data is Map<String, dynamic>
-        ? response.data as Map<String, dynamic>
-        : (response.data['data'] as Map<String, dynamic>?) ?? {};
+    final responseData = response.data as Map<String, dynamic>;
+    final data = responseData['data'] as Map<String, dynamic>? ?? {};
 
     final bannersJson = data['banners'] as List<dynamic>? ?? [];
     final brandsJson = data['brands'] as List<dynamic>? ?? [];
     final categoriesJson = data['categories'] as List<dynamic>? ?? [];
     final newProductsJson = data['new_products'] as List<dynamic>? ?? [];
-    final discountProductsJson = data['discount_products'] as List<dynamic>? ?? [];
+    final discountProductsJson =
+        data['discount_products'] as List<dynamic>? ?? [];
 
     return HomeData(
-      banners: bannersJson.map((e) => BannerModel.fromJson(e as Map<String, dynamic>)).toList(),
-      brands: brandsJson.map((e) => Brand.fromJson(e as Map<String, dynamic>)).toList(),
-      categories: categoriesJson.map((e) => Category.fromJson(e as Map<String, dynamic>)).toList(),
-      newProducts: newProductsJson.map((e) => Product.fromJson(e as Map<String, dynamic>)).toList(),
-      discountProducts: discountProductsJson.map((e) => Product.fromJson(e as Map<String, dynamic>)).toList(),
+      banners: bannersJson
+          .map((e) => BannerModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      brands: brandsJson
+          .map((e) => Brand.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      categories: categoriesJson
+          .map((e) => Category.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      newProducts: newProductsJson
+          .map((e) => Product.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      discountProducts: discountProductsJson
+          .map((e) => Product.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
   }
 }

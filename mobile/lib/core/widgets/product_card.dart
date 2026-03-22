@@ -34,79 +34,94 @@ class ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Image + favorite + discount badge
-            Stack(
-              children: [
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: AppCachedImage(
+            Expanded(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  AppCachedImage(
                     imageUrl: product.imageUrl,
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(16),
+                    ),
                     fit: BoxFit.contain,
                   ),
-                ),
-                // Favorite button
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: ListenableBuilder(
-                    listenable: favs,
-                    builder: (context, _) {
-                      final isFav = favs.isFavorite(product.id);
-                      return GestureDetector(
-                        onTap: () => favs.toggleFavorite(product),
-                        child: Icon(
-                          isFav ? LucideIcons.heartOff : LucideIcons.heart,
-                          size: 28,
-                          color: isFav ? theme.colorScheme.error : theme.colorScheme.secondary,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                // Discount badge
-                if (product.isDiscount && product.discountPercent != null && product.discountPercent! > 0)
+                  // Favorite button
                   Positioned(
-                    bottom: 8,
-                    left: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.error,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        '-${product.discountPercent}%',
-                        style: theme.textTheme.labelMedium?.copyWith(color: Colors.white),
-                      ),
+                    top: 8,
+                    right: 8,
+                    child: ListenableBuilder(
+                      listenable: favs,
+                      builder: (context, _) {
+                        final isFav = favs.isFavorite(product.id);
+                        return GestureDetector(
+                          onTap: () => favs.toggleFavorite(product),
+                          child: Icon(
+                            isFav ? LucideIcons.heartOff : LucideIcons.heart,
+                            size: 24,
+                            color: isFav
+                                ? theme.colorScheme.error
+                                : theme.colorScheme.secondary,
+                          ),
+                        );
+                      },
                     ),
                   ),
-              ],
+                  // Discount badge
+                  if (product.isDiscount &&
+                      product.discountPercent != null &&
+                      product.discountPercent! > 0)
+                    Positioned(
+                      bottom: 8,
+                      left: 8,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.error,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '-${product.discountPercent}%',
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(8),
               child: Column(
                 children: [
                   // Brand name
                   Text(
                     product.brandName,
-                    style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   // Description
                   Text(
                     product.name,
-                    style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.secondary),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.secondary,
+                    ),
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   // Price
                   _buildPrice(theme),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   // Cart button or quantity selector
                   ListenableBuilder(
                     listenable: cart,
@@ -116,15 +131,24 @@ class ProductCard extends StatelessWidget {
                         return QuantitySelector(
                           quantity: qty,
                           unitLabel: l10n.pieces,
-                          onIncrement: () => cart.updateQuantity(product.id, qty + 1),
-                          onDecrement: () => cart.updateQuantity(product.id, qty - 1),
+                          onIncrement: () =>
+                              cart.updateQuantity(product.id, qty + 1),
+                          onDecrement: () =>
+                              cart.updateQuantity(product.id, qty - 1),
                         );
                       }
                       return SizedBox(
                         width: double.infinity,
+                        height: 36, // Slightly smaller button
                         child: OutlinedButton(
                           onPressed: () => cart.addToCart(product),
-                          child: Text(l10n.addToCart),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                          ),
+                          child: Text(
+                            l10n.addToCart,
+                            style: const TextStyle(fontSize: 13),
+                          ),
                         ),
                       );
                     },

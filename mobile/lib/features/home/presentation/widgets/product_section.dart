@@ -44,15 +44,16 @@ class ProductSection extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              childAspectRatio: 0.55,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              childAspectRatio: 0.65,
             ),
             itemCount: displayProducts.length,
             itemBuilder: (context, index) {
               return ProductCard(
                 product: displayProducts[index],
-                onTap: () => context.push('/product/${displayProducts[index].id}'),
+                onTap: () =>
+                    context.push('/product/${displayProducts[index].id}'),
               );
             },
           ),
