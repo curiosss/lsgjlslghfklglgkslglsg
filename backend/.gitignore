@@ -14,7 +14,7 @@ tmp/
 !.env.example
 
 
-# uploads/*
+uploads/*
 
 # Test / Coverage
 *.test

@@ -40,12 +40,12 @@ services:
     volumes:
       - ./backend/uploads:/app/uploads
 
-  # admin:
-  #   build: ./admin
-  #   ports:
-  #     - "3001:80"
-  #   depends_on:
-  #     - server
+  admin:
+    build: ./admin
+    ports:
+      - "3001:80"
+    depends_on:
+      - server
 
   web:
     build: ./web_client
