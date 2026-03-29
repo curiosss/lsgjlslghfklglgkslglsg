@@ -62,7 +62,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       return Scaffold(appBar: AppBar(), body: const LoadingIndicator());
     }
     if (_product == null) {
-      return Scaffold(appBar: AppBar(), body: const Center(child: Text('Product not found')));
+      return Scaffold(
+        appBar: AppBar(),
+        body: const Center(child: Text('Product not found')),
+      );
     }
 
     final product = _product!;
@@ -79,7 +82,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               height: 300,
               color: theme.colorScheme.surfaceContainerHighest,
               child: InteractiveViewer(
-                child: AppCachedImage(imageUrl: product.imageUrl, fit: BoxFit.contain, width: double.infinity, height: 300),
+                child: AppCachedImage(
+                  imageUrl: product.imageUrl,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: 300,
+                ),
               ),
             ),
             Padding(
@@ -88,9 +96,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Brand & name
-                  Text(product.brandName, style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
+                  Text(
+                    product.brandName,
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const SizedBox(height: 4),
-                  Text(product.name, style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.secondary)),
+                  Text(
+                    product.name,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: theme.colorScheme.secondary,
+                    ),
+                  ),
                   const SizedBox(height: 16),
 
                   // Action row
@@ -106,8 +124,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             QuantitySelector(
                               quantity: qty,
                               unitLabel: l10n.pieces,
-                              onIncrement: () => cart.updateQuantity(product.id, qty + 1),
-                              onDecrement: () => cart.updateQuantity(product.id, qty - 1),
+                              onIncrement: () =>
+                                  cart.updateQuantity(product.id, qty + 1),
+                              onDecrement: () =>
+                                  cart.updateQuantity(product.id, qty - 1),
                             )
                           else
                             OutlinedButton(
@@ -117,7 +137,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           const SizedBox(width: 16),
                           Text(
                             Formatters.price(product.price),
-                            style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+                            style: theme.textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           const Spacer(),
                           IconButton(
@@ -125,7 +147,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             icon: Icon(
                               isFav ? LucideIcons.heartOff : LucideIcons.heart,
                               size: 36,
-                              color: isFav ? theme.colorScheme.error : theme.colorScheme.secondary,
+                              color: isFav
+                                  ? theme.colorScheme.error
+                                  : theme.colorScheme.secondary,
                             ),
                           ),
                         ],
@@ -144,7 +168,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     label: l10n.brand,
                     value: product.brandName,
                     onTap: product.brandId != null
-                        ? () => context.push('/products', extra: ProductListArgs(title: product.brandName, brandId: product.brandId))
+                        ? () => context.push(
+                            '/products',
+                            extra: ProductListArgs(
+                              title: product.brandName,
+                              brandId: product.brandId,
+                            ),
+                          )
                         : null,
                   ),
                   const Divider(),
@@ -152,7 +182,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
                   // Related
                   if (_related.isNotEmpty) ...[
-                    Text(l10n.relatedProducts, style: theme.textTheme.headlineMedium),
+                    Text(
+                      l10n.relatedProducts,
+                      style: theme.textTheme.headlineMedium,
+                    ),
                     const SizedBox(height: 12),
                     SizedBox(
                       height: 320,
@@ -165,7 +198,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             width: 180,
                             child: ProductCard(
                               product: _related[index],
-                              onTap: () => context.push('/product/${_related[index].id}'),
+                              onTap: () => context.push(
+                                '/product/${_related[index].id}',
+                              ),
                             ),
                           );
                         },
@@ -197,7 +232,12 @@ class _DetailRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.secondary)),
+          Text(
+            label,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.secondary,
+            ),
+          ),
           GestureDetector(
             onTap: onTap,
             child: Text(

@@ -43,7 +43,7 @@ class ProductCard extends StatelessWidget {
                     borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(16),
                     ),
-                    fit: BoxFit.contain,
+                    fit: BoxFit.cover,
                   ),
                   // Favorite button
                   Positioned(

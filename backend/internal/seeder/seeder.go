@@ -212,18 +212,18 @@ func (s *Seeder) seedCategories(ctx context.Context) (categoryIDs []int, subCate
 // ── Products ──
 
 type productDef struct {
-	nameRu      string
-	nameTm      string
-	descRu      string
-	descTm      string
-	price       float64
-	oldPrice    float64
-	discount    int
-	brandIdx    int // index into brandIDs, -1 = no brand
-	catIdx      int // index into categoryIDs
-	subCatIdx   int // index into subCategoryIDs, -1 = no subcat
-	isNew       bool
-	isDiscount  bool
+	nameRu     string
+	nameTm     string
+	descRu     string
+	descTm     string
+	price      float64
+	oldPrice   float64
+	discount   int
+	brandIdx   int // index into brandIDs, -1 = no brand
+	catIdx     int // index into categoryIDs
+	subCatIdx  int // index into subCategoryIDs, -1 = no subcat
+	isNew      bool
+	isDiscount bool
 }
 
 func (s *Seeder) seedProducts(ctx context.Context, brandIDs, categoryIDs, subCategoryIDs []int) {
@@ -279,20 +279,39 @@ func (s *Seeder) seedProducts(ctx context.Context, brandIDs, categoryIDs, subCat
 		{nameRu: "Салфетки универсальные 100шт", nameTm: "Uniwersal salfetka 100 sany", descRu: "Мягкие бумажные салфетки для ежедневного использования.", descTm: "Gündelik ulanmak üçin ýumşak kagyz salfetka.", price: 19.90, brandIdx: -1, catIdx: 7, subCatIdx: 19},
 	}
 
+	brandImages := map[int]string{
+		0: "https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=400", // Ariel
+		1: "https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=400", // Tide
+		2: "https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=400", // Fairy
+		3: "https://images.unsplash.com/photo-1584820927498-cafe8c13a526?w=400", // Domestos
+		4: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400", // Dove
+		5: "https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=400", // Head & Shoulders
+		6: "https://images.unsplash.com/photo-1559591937-bea516a24eb5?w=400",    // Colgate
+		7: "https://images.unsplash.com/photo-1510506026136-23136209cc59?w=400", // Pampers
+		8: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400",    // Nivea
+		9: "https://images.unsplash.com/photo-1584471010313-add5fb635ee4?w=400", // Persil
+	}
+	fallbackImage := "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400"
+
 	created := 0
 	for i, pd := range products {
+		imgUrl := fallbackImage
+		if url, ok := brandImages[pd.brandIdx]; ok {
+			imgUrl = url
+		}
+
 		p := &models.Product{
-			NameRu:       pd.nameRu,
-			NameTm:       pd.nameTm,
+			NameRu:        pd.nameRu,
+			NameTm:        pd.nameTm,
 			DescriptionRu: strPtr(pd.descRu),
 			DescriptionTm: strPtr(pd.descTm),
-			Price:        pd.price,
-			ImageUrl:     "/uploads/placeholder.svg",
-			Images:       pq.StringArray{},
-			IsActive:     true,
-			IsNew:        pd.isNew,
-			IsDiscount:   pd.isDiscount,
-			SortOrder:    i + 1,
+			Price:         pd.price,
+			ImageUrl:      imgUrl,
+			Images:        pq.StringArray{},
+			IsActive:      true,
+			IsNew:         pd.isNew,
+			IsDiscount:    pd.isDiscount,
+			SortOrder:     i + 1,
 		}
 
 		if pd.brandIdx >= 0 && pd.brandIdx < len(brandIDs) {
