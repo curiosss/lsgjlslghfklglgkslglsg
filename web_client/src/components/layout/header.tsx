@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { Search, Heart, ShoppingCart, Sun, Moon, Monitor, X } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { useLocaleStore } from '@/store/locale';
 import { useCartStore } from '@/store/cart';
 import { useTr } from '@/i18n';
 import { SearchInput } from '@/components/ui/search-input';
+import { LanguageSelector } from '@/components/layout/language-selector';
 import { cn } from '@/lib/utils';
 
 export function Header() {
@@ -16,7 +16,6 @@ export function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
-  const { locale, toggleLocale } = useLocaleStore();
   const totalCount = useCartStore((s) => s.totalCount());
 
   const [mounted, setMounted] = useState(false);
@@ -72,9 +71,7 @@ export function Header() {
             {themeIcon}
           </button>
 
-          <button onClick={toggleLocale} className="flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold hover:bg-accent transition-colors">
-            {locale.toUpperCase()}
-          </button>
+          <LanguageSelector />
 
           {/* Desktop only nav */}
           <div className="hidden items-center gap-1 md:flex">
