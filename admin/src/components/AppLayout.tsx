@@ -58,6 +58,7 @@ export const AppLayout = () => {
         onCollapse={toggleSidebar}
         breakpoint="lg"
         theme="dark"
+        trigger={null}
       >
         <div style={{ height: 48, margin: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Typography.Text strong style={{ color: '#fff', fontSize: sidebarCollapsed ? 14 : 18 }}>
