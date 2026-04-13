@@ -8,6 +8,7 @@ const (
 	RoleSuperAdmin AdminRole = "superadmin"
 	RoleAdmin      AdminRole = "admin"
 	RoleManager    AdminRole = "manager"
+	RolePOS        AdminRole = "pos"
 )
 
 type Admin struct {

@@ -1,0 +1,2 @@
+ALTER TABLE products DROP COLUMN IF EXISTS status;
+ALTER TABLE products DROP COLUMN IF EXISTS pos_name;

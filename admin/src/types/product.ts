@@ -3,6 +3,7 @@ export interface Product {
   name_ru: string;
   name_tm: string;
   name_en?: string;
+  pos_name?: string;
   brand_id?: number;
   category_id?: number;
   subcategory_id?: number;
@@ -16,6 +17,7 @@ export interface Product {
   images?: string[];
   barcode?: string;
   is_active: boolean;
+  status: string;
   is_new: boolean;
   is_discount: boolean;
   sort_order: number;
@@ -28,6 +30,7 @@ export interface CreateProductRequest {
   name_ru: string;
   name_tm: string;
   name_en?: string;
+  pos_name?: string;
   brand_id?: number;
   category_id?: number;
   subcategory_id?: number;
@@ -41,6 +44,7 @@ export interface CreateProductRequest {
   images?: string[];
   barcode?: string;
   is_active?: boolean;
+  status?: string;
   is_new?: boolean;
   is_discount?: boolean;
   sort_order: number;
@@ -50,6 +54,7 @@ export interface UpdateProductRequest {
   name_ru?: string;
   name_tm?: string;
   name_en?: string;
+  pos_name?: string;
   brand_id?: number;
   category_id?: number;
   subcategory_id?: number;
@@ -63,6 +68,7 @@ export interface UpdateProductRequest {
   images?: string[];
   barcode?: string;
   is_active?: boolean;
+  status?: string;
   is_new?: boolean;
   is_discount?: boolean;
   sort_order?: number;
@@ -72,6 +78,7 @@ export interface ProductFilters {
   category_id?: number;
   subcategory_id?: number;
   brand_id?: number;
+  status?: string;
   search?: string;
   page?: number;
   limit?: number;

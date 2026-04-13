@@ -11,6 +11,7 @@ type Product struct {
 	NameRu          string         `json:"name_ru" db:"name_ru"`
 	NameTm          string         `json:"name_tm" db:"name_tm"`
 	NameEn          string         `json:"name_en" db:"name_en"`
+	PosName         *string        `json:"pos_name" db:"pos_name"`
 	BrandID         *int           `json:"brand_id" db:"brand_id"`
 	CategoryID      *int           `json:"category_id" db:"category_id"`
 	SubCategoryID   *int           `json:"subcategory_id" db:"subcategory_id"`
@@ -24,6 +25,7 @@ type Product struct {
 	Images          pq.StringArray `json:"images" db:"images"`
 	Barcode         *string        `json:"barcode" db:"barcode"`
 	IsActive        bool           `json:"is_active" db:"is_active"`
+	Status          string         `json:"status" db:"status"`
 	IsNew           bool           `json:"is_new" db:"is_new"`
 	IsDiscount      bool           `json:"is_discount" db:"is_discount"`
 	SortOrder       int            `json:"sort_order" db:"sort_order"`
@@ -36,6 +38,7 @@ type Product struct {
 type ProductResponse struct {
 	ID              int      `json:"id"`
 	Name            string   `json:"name"`
+	PosName         *string  `json:"pos_name,omitempty"`
 	BrandName       string   `json:"brand_name"`
 	BrandID         *int     `json:"brand_id,omitempty"`
 	CategoryID      *int     `json:"category_id,omitempty"`
@@ -47,6 +50,8 @@ type ProductResponse struct {
 	ImageUrl        string   `json:"image_url"`
 	Images          []string `json:"images,omitempty"`
 	Barcode         *string  `json:"barcode,omitempty"`
+	IsActive        bool     `json:"is_active"`
+	Status          string   `json:"status"`
 	IsNew           bool     `json:"is_new"`
 	IsDiscount      bool     `json:"is_discount"`
 }
@@ -59,12 +64,14 @@ type ProductFilters struct {
 	Sort          string
 	IsNew         *bool
 	IsDiscount    *bool
+	Status        *string
 }
 
 type CreateProductRequest struct {
 	NameRu          string   `json:"name_ru" validate:"required,min=1,max=500"`
 	NameTm          string   `json:"name_tm" validate:"required,min=1,max=500"`
 	NameEn          string   `json:"name_en" validate:"omitempty,max=500"`
+	PosName         *string  `json:"pos_name" validate:"omitempty,max=500"`
 	BrandID         *int     `json:"brand_id"`
 	CategoryID      *int     `json:"category_id"`
 	SubCategoryID   *int     `json:"subcategory_id"`
@@ -78,6 +85,7 @@ type CreateProductRequest struct {
 	Images          []string `json:"images"`
 	Barcode         *string  `json:"barcode"`
 	IsActive        *bool    `json:"is_active"`
+	Status          *string  `json:"status"`
 	IsNew           *bool    `json:"is_new"`
 	IsDiscount      *bool    `json:"is_discount"`
 	SortOrder       int      `json:"sort_order"`
@@ -87,6 +95,7 @@ type UpdateProductRequest struct {
 	NameRu          *string  `json:"name_ru" validate:"omitempty,min=1,max=500"`
 	NameTm          *string  `json:"name_tm" validate:"omitempty,min=1,max=500"`
 	NameEn          *string  `json:"name_en" validate:"omitempty,max=500"`
+	PosName         *string  `json:"pos_name" validate:"omitempty,max=500"`
 	BrandID         *int     `json:"brand_id"`
 	CategoryID      *int     `json:"category_id"`
 	SubCategoryID   *int     `json:"subcategory_id"`
@@ -100,6 +109,7 @@ type UpdateProductRequest struct {
 	Images          []string `json:"images"`
 	Barcode         *string  `json:"barcode"`
 	IsActive        *bool    `json:"is_active"`
+	Status          *string  `json:"status"`
 	IsNew           *bool    `json:"is_new"`
 	IsDiscount      *bool    `json:"is_discount"`
 	SortOrder       *int     `json:"sort_order"`
@@ -135,6 +145,7 @@ func (p *Product) ToResponse(lang string) ProductResponse {
 	return ProductResponse{
 		ID:              p.ID,
 		Name:            name,
+		PosName:         p.PosName,
 		BrandName:       brandName,
 		BrandID:         p.BrandID,
 		CategoryID:      p.CategoryID,
@@ -146,6 +157,8 @@ func (p *Product) ToResponse(lang string) ProductResponse {
 		ImageUrl:        p.ImageUrl,
 		Images:          images,
 		Barcode:         p.Barcode,
+		IsActive:        p.IsActive,
+		Status:          p.Status,
 		IsNew:           p.IsNew,
 		IsDiscount:      p.IsDiscount,
 	}

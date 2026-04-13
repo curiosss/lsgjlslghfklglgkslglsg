@@ -15,6 +15,8 @@ import { OrderDetailPage } from './pages/OrderDetailPage';
 import { DeliveryZonesPage } from './pages/DeliveryZonesPage';
 import { TimeSlotsPage } from './pages/TimeSlotsPage';
 import { AdminsPage } from './pages/AdminsPage';
+import POSUsersPage from './pages/POSUsersPage';
+import { NotReviewedProductsPage } from './pages/NotReviewedProductsPage';
 
 const theme = {
   token: {
@@ -46,6 +48,8 @@ function App() {
               <Route path="/orders/:id" element={<OrderDetailPage />} />
               <Route path="/delivery-zones" element={<DeliveryZonesPage />} />
               <Route path="/time-slots" element={<TimeSlotsPage />} />
+              <Route path="/not-reviewed-products" element={<NotReviewedProductsPage />} />
+              <Route path="/pos-users" element={<POSUsersPage />} />
               <Route path="/admins" element={<AdminsPage />} />
             </Route>
           </Route>

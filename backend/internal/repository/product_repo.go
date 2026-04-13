@@ -20,7 +20,7 @@ func NewProductRepo(db *sqlx.DB) *ProductRepo {
 const productSelectBase = `SELECT p.*, b.name AS brand_name FROM products p LEFT JOIN brands b ON p.brand_id = b.id`
 
 func (r *ProductRepo) GetAll(ctx context.Context, filters models.ProductFilters, page, limit int) ([]models.Product, int, error) {
-	where := []string{"p.is_active = true"}
+	where := []string{"p.is_active = true", "(p.status = 'active' OR p.status = '' OR p.status IS NULL)"}
 	args := []interface{}{}
 	argIdx := 1
 
@@ -111,6 +111,12 @@ func (r *ProductRepo) AdminGetAll(ctx context.Context, filters models.ProductFil
 		argIdx++
 	}
 
+	if filters.Status != nil && *filters.Status != "" {
+		where = append(where, fmt.Sprintf("p.status = $%d", argIdx))
+		args = append(args, *filters.Status)
+		argIdx++
+	}
+
 	whereClause := strings.Join(where, " AND ")
 
 	countQuery := fmt.Sprintf("SELECT COUNT(*) FROM products p WHERE %s", whereClause)
@@ -143,14 +149,14 @@ func (r *ProductRepo) GetByID(ctx context.Context, id int) (*models.Product, err
 func (r *ProductRepo) GetNew(ctx context.Context, limit int) ([]models.Product, error) {
 	var products []models.Product
 	err := r.db.SelectContext(ctx, &products,
-		productSelectBase+" WHERE p.is_active = true AND p.is_new = true ORDER BY p.created_at DESC LIMIT $1", limit)
+		productSelectBase+" WHERE p.is_active = true AND (p.status = 'active' OR p.status = '' OR p.status IS NULL) AND p.is_new = true ORDER BY p.created_at DESC LIMIT $1", limit)
 	return products, err
 }
 
 func (r *ProductRepo) GetDiscounted(ctx context.Context, limit int) ([]models.Product, error) {
 	var products []models.Product
 	err := r.db.SelectContext(ctx, &products,
-		productSelectBase+" WHERE p.is_active = true AND p.is_discount = true ORDER BY p.created_at DESC LIMIT $1", limit)
+		productSelectBase+" WHERE p.is_active = true AND (p.status = 'active' OR p.status = '' OR p.status IS NULL) AND p.is_discount = true ORDER BY p.created_at DESC LIMIT $1", limit)
 	return products, err
 }
 
@@ -158,36 +164,36 @@ func (r *ProductRepo) GetRelated(ctx context.Context, productID int, limit int) 
 	// Get same category products, exclude current product, random order
 	var products []models.Product
 	err := r.db.SelectContext(ctx, &products,
-		productSelectBase+` WHERE p.is_active = true AND p.id != $1
+		productSelectBase+` WHERE p.is_active = true AND (p.status = 'active' OR p.status = '' OR p.status IS NULL) AND p.id != $1
 		AND p.category_id = (SELECT category_id FROM products WHERE id = $1)
 		ORDER BY RANDOM() LIMIT $2`, productID, limit)
 	return products, err
 }
 
 func (r *ProductRepo) Create(ctx context.Context, p *models.Product) error {
-	query := `INSERT INTO products (name_ru, name_tm, name_en, brand_id, category_id, subcategory_id, description_ru, description_tm, description_en,
-		price, old_price, discount_percent, image_url, images, barcode, is_active, is_new, is_discount, sort_order)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19) RETURNING id, created_at, updated_at`
+	query := `INSERT INTO products (name_ru, name_tm, name_en, pos_name, brand_id, category_id, subcategory_id, description_ru, description_tm, description_en,
+		price, old_price, discount_percent, image_url, images, barcode, is_active, status, is_new, is_discount, sort_order)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21) RETURNING id, created_at, updated_at`
 	return r.db.QueryRowxContext(ctx, query,
-		p.NameRu, p.NameTm, p.NameEn, p.BrandID, p.CategoryID, p.SubCategoryID,
+		p.NameRu, p.NameTm, p.NameEn, p.PosName, p.BrandID, p.CategoryID, p.SubCategoryID,
 		p.DescriptionRu, p.DescriptionTm, p.DescriptionEn,
 		p.Price, p.OldPrice, p.DiscountPercent,
 		p.ImageUrl, p.Images, p.Barcode,
-		p.IsActive, p.IsNew, p.IsDiscount, p.SortOrder,
+		p.IsActive, p.Status, p.IsNew, p.IsDiscount, p.SortOrder,
 	).Scan(&p.ID, &p.CreatedAt, &p.UpdatedAt)
 }
 
 func (r *ProductRepo) Update(ctx context.Context, p *models.Product) error {
-	query := `UPDATE products SET name_ru=$1, name_tm=$2, name_en=$3, brand_id=$4, category_id=$5, subcategory_id=$6,
-		description_ru=$7, description_tm=$8, description_en=$9, price=$10, old_price=$11, discount_percent=$12,
-		image_url=$13, images=$14, barcode=$15, is_active=$16, is_new=$17, is_discount=$18, sort_order=$19,
-		updated_at=NOW() WHERE id=$20`
+	query := `UPDATE products SET name_ru=$1, name_tm=$2, name_en=$3, pos_name=$4, brand_id=$5, category_id=$6, subcategory_id=$7,
+		description_ru=$8, description_tm=$9, description_en=$10, price=$11, old_price=$12, discount_percent=$13,
+		image_url=$14, images=$15, barcode=$16, is_active=$17, status=$18, is_new=$19, is_discount=$20, sort_order=$21,
+		updated_at=NOW() WHERE id=$22`
 	_, err := r.db.ExecContext(ctx, query,
-		p.NameRu, p.NameTm, p.NameEn, p.BrandID, p.CategoryID, p.SubCategoryID,
+		p.NameRu, p.NameTm, p.NameEn, p.PosName, p.BrandID, p.CategoryID, p.SubCategoryID,
 		p.DescriptionRu, p.DescriptionTm, p.DescriptionEn,
 		p.Price, p.OldPrice, p.DiscountPercent,
 		p.ImageUrl, p.Images, p.Barcode,
-		p.IsActive, p.IsNew, p.IsDiscount, p.SortOrder, p.ID)
+		p.IsActive, p.Status, p.IsNew, p.IsDiscount, p.SortOrder, p.ID)
 	return err
 }
 

@@ -46,6 +46,7 @@ func Setup(cfg *config.Config, db *sqlx.DB) *gin.Engine {
 	deliveryZoneRepo := repository.NewDeliveryZoneRepo(db)
 	timeSlotRepo := repository.NewTimeSlotRepo(db)
 	orderRepo := repository.NewOrderRepo(db)
+	posUserRepo := repository.NewPOSUserRepo(db)
 
 	// ── Services ──
 	adminService := service.NewAdminService(adminRepo, cfg.JWT)
@@ -58,6 +59,8 @@ func Setup(cfg *config.Config, db *sqlx.DB) *gin.Engine {
 	orderService := service.NewOrderService(orderRepo, productRepo, deliveryZoneRepo)
 	homeService := service.NewHomeService(bannerRepo, brandRepo, categoryRepo, productRepo)
 	uploadService := service.NewUploadService(cfg.Upload)
+	posUserService := service.NewPOSUserService(posUserRepo)
+	posService := service.NewPOSService(posUserRepo, productRepo, cfg.JWT)
 
 	// ── Handlers ──
 	authHandler := handler.NewAuthHandler(adminService)
@@ -71,6 +74,8 @@ func Setup(cfg *config.Config, db *sqlx.DB) *gin.Engine {
 	orderHandler := handler.NewOrderHandler(orderService)
 	homeHandler := handler.NewHomeHandler(homeService)
 	uploadHandler := handler.NewUploadHandler(uploadService)
+	posUserHandler := handler.NewPOSUserHandler(posUserService)
+	posHandler := handler.NewPOSHandler(posService)
 
 	// ══════════════════════════════════════
 	// PUBLIC API
@@ -89,6 +94,20 @@ func Setup(cfg *config.Config, db *sqlx.DB) *gin.Engine {
 		api.GET("/time-slots", timeSlotHandler.GetAll)
 		api.POST("/orders", orderHandler.Create)
 		api.GET("/orders", orderHandler.GetByPhone)
+	}
+
+	// ══════════════════════════════════════
+	// POS API
+	// ══════════════════════════════════════
+	posApi := r.Group("/api/v1/pos")
+	{
+		posApi.POST("/auth/token", posHandler.Token)
+
+		posProtected := posApi.Group("")
+		posProtected.Use(middleware.Auth(cfg.JWT.Secret), middleware.RequireRole(models.RolePOS))
+		{
+			posProtected.POST("/products/import", posHandler.ImportProducts)
+		}
 	}
 
 	// ══════════════════════════════════════
@@ -166,6 +185,15 @@ func Setup(cfg *config.Config, db *sqlx.DB) *gin.Engine {
 			// Upload
 			protected.POST("/upload", uploadHandler.Upload)
 			protected.DELETE("/upload", uploadHandler.Delete)
+
+			// POS Users
+			posUsers := protected.Group("/pos-users")
+			{
+				posUsers.GET("", posUserHandler.GetAll)
+				posUsers.POST("", posUserHandler.Create)
+				posUsers.PUT("/:id", posUserHandler.Update)
+				posUsers.DELETE("/:id", posUserHandler.Delete)
+			}
 		}
 	}
 

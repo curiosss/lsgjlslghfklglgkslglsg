@@ -12,7 +12,7 @@ func main() {
 	e := echo.New()
 
 	// Handle /token/ specially
-	e.POST("/integration/pos/", func(c echo.Context) error {
+	e.POST("/token/", func(c echo.Context) error {
 		body, err := io.ReadAll(c.Request().Body)
 		if err != nil {
 			return c.String(http.StatusInternalServerError, "Failed to read body")
@@ -29,7 +29,7 @@ func main() {
 	})
 
 	// Catch-all for any other path (Echo allows wildcard routes)
-	e.POST("/*", func(c echo.Context) error {
+	e.POST("/import-product/", func(c echo.Context) error {
 		body, err := io.ReadAll(c.Request().Body)
 		if err != nil {
 			return c.String(http.StatusInternalServerError, "Failed to read body")

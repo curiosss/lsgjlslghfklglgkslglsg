@@ -1,0 +1,2 @@
+ALTER TABLE products ADD COLUMN pos_name VARCHAR(500);
+ALTER TABLE products ADD COLUMN status VARCHAR(50) DEFAULT 'active';

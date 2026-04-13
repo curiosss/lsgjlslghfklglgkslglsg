@@ -12,7 +12,7 @@ import { formatPrice, formatDateTime } from '../utils/format';
 import { useTr } from '../i18n';
 import type { Product, Category, SubCategory, Brand, ProductFilters, Pagination } from '../types';
 
-export const ProductsPage = () => {
+export const NotReviewedProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -25,7 +25,7 @@ export const ProductsPage = () => {
   const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
 
-  const [filters, setFilters] = useState<ProductFilters>({ page: 1, limit: 20 });
+  const [filters, setFilters] = useState<ProductFilters>({ page: 1, limit: 20, status: 'not_reviewed' });
   const [pagination, setPagination] = useState<Pagination>({ page: 1, limit: 20, total: 0, total_pages: 0 });
 
   const fetchProducts = useCallback(async (params?: ProductFilters) => {
@@ -62,6 +62,7 @@ export const ProductsPage = () => {
     const newFilters: ProductFilters = {
       page: 1,
       limit: filters.limit,
+      status: 'not_reviewed',
       ...(values.search && { search: values.search }),
       ...(values.category_id && { category_id: values.category_id }),
       ...(values.brand_id && { brand_id: values.brand_id }),
@@ -71,7 +72,7 @@ export const ProductsPage = () => {
 
   const handleResetSearch = () => {
     searchForm.resetFields();
-    const newFilters: ProductFilters = { page: 1, limit: 20 };
+    const newFilters: ProductFilters = { page: 1, limit: 20, status: 'not_reviewed' };
     setFilters(newFilters);
   };
 
@@ -92,7 +93,7 @@ export const ProductsPage = () => {
       form.setFieldsValue(product);
       if (product.category_id) handleCategoryChange(product.category_id);
     } else {
-      form.setFieldsValue({ price: 0, sort_order: 0, is_active: true, status: 'active', is_new: false, is_discount: false });
+      form.setFieldsValue({ price: 0, sort_order: 0, is_active: true, status: 'not_reviewed', is_new: false, is_discount: false });
     }
     setDrawerOpen(true);
   };
@@ -162,7 +163,7 @@ export const ProductsPage = () => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-        <h2>{t('products_title')}</h2>
+        <h2>Непроверенные товары (POS)</h2>
         <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>{t('add')}</Button>
       </div>
 

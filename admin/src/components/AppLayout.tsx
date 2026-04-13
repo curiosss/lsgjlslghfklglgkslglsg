@@ -45,6 +45,8 @@ export const AppLayout = () => {
     { key: '/orders', icon: <OrderedListOutlined />, label: t('nav_orders') },
     { key: '/delivery-zones', icon: <CarOutlined />, label: t('nav_delivery_zones') },
     { key: '/time-slots', icon: <ClockCircleOutlined />, label: t('nav_time_slots') },
+    { key: '/not-reviewed-products', icon: <ShoppingOutlined />, label: 'Непроверенные товары' },
+    { key: '/pos-users', icon: <TeamOutlined />, label: 'POS Интеграция' },
     ...(admin?.role === 'superadmin'
       ? [{ key: '/admins', icon: <TeamOutlined />, label: t('nav_admins') }]
       : []),
