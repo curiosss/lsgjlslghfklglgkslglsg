@@ -101,8 +101,7 @@ func (h *BrandHandler) Update(c *gin.Context) {
 		return
 	}
 	var req models.UpdateBrandRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		utils.ErrorResponse(c, http.StatusBadRequest, "VALIDATION_ERROR", "Invalid request body")
+	if err := utils.BindBody(c, &req); err != nil {
 		return
 	}
 	brand, err := h.service.Update(c.Request.Context(), id, req)

@@ -23,8 +23,7 @@ type posLoginRequest struct {
 
 func (h *POSHandler) Token(c *gin.Context) {
 	var req posLoginRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		utils.ErrorResponse(c, http.StatusBadRequest, "VALIDATION_ERROR", "Invalid request body")
+	if err := utils.BindBody(c, &req); err != nil {
 		return
 	}
 
@@ -34,7 +33,7 @@ func (h *POSHandler) Token(c *gin.Context) {
 		return
 	}
 
-	// For compatibility with POS expectations: 
+	// For compatibility with POS expectations:
 	// `{"access": "fake-jwt..."}` as seen in test_server.go
 	c.JSON(http.StatusOK, gin.H{
 		"access": resp.AccessToken,
@@ -43,8 +42,7 @@ func (h *POSHandler) Token(c *gin.Context) {
 
 func (h *POSHandler) ImportProducts(c *gin.Context) {
 	var payload service.POSImportPayload
-	if err := c.ShouldBindJSON(&payload); err != nil {
-		utils.ErrorResponse(c, http.StatusBadRequest, "VALIDATION_ERROR", "Invalid request body")
+	if err := utils.BindBody(c, &payload); err != nil {
 		return
 	}
 

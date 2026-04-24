@@ -23,7 +23,7 @@ export function BannerCarousel({ banners }: BannerCarouselProps) {
 
   return (
     <Swiper
-      className="w-full overflow-hidden rounded-xl"
+      className="w-full "
       modules={[Autoplay, Pagination]}
       autoplay={{ delay: 4000, disableOnInteraction: false }}
       pagination={{ clickable: true }}
@@ -35,15 +35,16 @@ export function BannerCarousel({ banners }: BannerCarouselProps) {
           onClick={() => handleClick(b)}
           className={b.link_type ? 'cursor-pointer' : ''}
         >
-          <div className="relative h-[200px] w-full md:h-[400px]">
+          <div className="relative h-[200px] w-full overflow-hidden rounded-xl md:h-[400px]">
             <Image
               src={b.image_url}
               alt=""
               fill
-              className="object-cover"
+              className="object-cover rounded-xl"
               priority={idx === 0}
               sizes="100vw"
             />
+            {/* <div className="pointer-events-none absolute inset-0 rounded-xl border border-border/50" /> */}
           </div>
         </SwiperSlide>
       ))}
