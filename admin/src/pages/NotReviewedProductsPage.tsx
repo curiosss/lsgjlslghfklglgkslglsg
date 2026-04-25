@@ -25,7 +25,7 @@ export const NotReviewedProductsPage = () => {
   const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
 
-  const [filters, setFilters] = useState<ProductFilters>({ page: 1, limit: 20, status: 'not_reviewed' });
+  const [filters, setFilters] = useState<ProductFilters>({ page: 1, limit: 20, is_active: false });
   const [pagination, setPagination] = useState<Pagination>({ page: 1, limit: 20, total: 0, total_pages: 0 });
 
   const fetchProducts = useCallback(async (params?: ProductFilters) => {
@@ -62,7 +62,7 @@ export const NotReviewedProductsPage = () => {
     const newFilters: ProductFilters = {
       page: 1,
       limit: filters.limit,
-      status: 'not_reviewed',
+      is_active: false,
       ...(values.search && { search: values.search }),
       ...(values.category_id && { category_id: values.category_id }),
       ...(values.brand_id && { brand_id: values.brand_id }),
@@ -72,7 +72,7 @@ export const NotReviewedProductsPage = () => {
 
   const handleResetSearch = () => {
     searchForm.resetFields();
-    const newFilters: ProductFilters = { page: 1, limit: 20, status: 'not_reviewed' };
+    const newFilters: ProductFilters = { page: 1, limit: 20, is_active: false };
     setFilters(newFilters);
   };
 
@@ -136,10 +136,12 @@ export const NotReviewedProductsPage = () => {
     { title: t('col_name_ru'), dataIndex: 'name_ru', key: 'name_ru', ellipsis: true },
     { title: t('col_brand'), dataIndex: 'brand_name', key: 'brand_name', render: (v: string) => v || '—' },
     { title: t('col_price'), dataIndex: 'price', key: 'price', width: 120, render: (v: number) => formatPrice(v) },
-    { title: t('col_old_price'), dataIndex: 'old_price', key: 'old_price', width: 120,
+    {
+      title: t('col_old_price'), dataIndex: 'old_price', key: 'old_price', width: 120,
       render: (v: number) => v ? formatPrice(v) : '—',
     },
-    { title: 'Статус (API)', dataIndex: 'status', key: 'status', width: 100, 
+    {
+      title: 'Статус (API)', dataIndex: 'status', key: 'status', width: 100,
       render: (v: string) => {
         if (v === 'not_reviewed') return '❌ Не провер.';
         if (v === 'inactive') return '⚠️ Откл.';

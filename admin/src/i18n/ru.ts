@@ -11,6 +11,7 @@ export const ru: Record<string, string> = {
   nav_delivery_zones: 'Зоны доставки',
   nav_time_slots: 'Временные слоты',
   nav_admins: 'Администраторы',
+  nav_not_reviewed_products: 'Непроверенные товары',
   logout: 'Выход',
 
   // Login

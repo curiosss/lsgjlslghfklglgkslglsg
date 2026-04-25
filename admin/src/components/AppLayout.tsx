@@ -45,7 +45,7 @@ export const AppLayout = () => {
     { key: '/orders', icon: <OrderedListOutlined />, label: t('nav_orders') },
     { key: '/delivery-zones', icon: <CarOutlined />, label: t('nav_delivery_zones') },
     { key: '/time-slots', icon: <ClockCircleOutlined />, label: t('nav_time_slots') },
-    { key: '/not-reviewed-products', icon: <ShoppingOutlined />, label: 'Непроверенные товары' },
+    { key: '/not-reviewed-products', icon: <ShoppingOutlined />, label: t('nav_not_reviewed_products') },
     { key: '/pos-users', icon: <TeamOutlined />, label: 'POS Интеграция' },
     ...(admin?.role === 'superadmin'
       ? [{ key: '/admins', icon: <TeamOutlined />, label: t('nav_admins') }]
@@ -53,7 +53,7 @@ export const AppLayout = () => {
   ];
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout style={{ height: '100vh', overflow: 'hidden' }}>
       <Sider
         collapsible
         collapsed={sidebarCollapsed}
@@ -61,6 +61,7 @@ export const AppLayout = () => {
         breakpoint="lg"
         theme="dark"
         trigger={null}
+        style={{ overflow: 'auto', height: '100vh' }}
       >
         <div style={{ height: 48, margin: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Typography.Text strong style={{ color: '#fff', fontSize: sidebarCollapsed ? 14 : 18 }}>
@@ -75,7 +76,7 @@ export const AppLayout = () => {
           onClick={({ key }) => navigate(key)}
         />
       </Sider>
-      <Layout>
+      <Layout style={{ overflow: 'auto' }}>
         <Header
           style={{
             padding: '0 24px',
@@ -109,7 +110,7 @@ export const AppLayout = () => {
             </Button>
           </div>
         </Header>
-        <Content style={{ margin: 24 }}>
+        <Content style={{ margin: 24, overflow: 'initial' }}>
           <Outlet />
         </Content>
       </Layout>

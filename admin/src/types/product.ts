@@ -79,6 +79,7 @@ export interface ProductFilters {
   subcategory_id?: number;
   brand_id?: number;
   status?: string;
+  is_active?: boolean;
   search?: string;
   page?: number;
   limit?: number;

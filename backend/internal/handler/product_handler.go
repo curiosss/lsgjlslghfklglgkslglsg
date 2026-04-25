@@ -79,6 +79,8 @@ func (h *ProductHandler) AdminGetAll(c *gin.Context) {
 		SubCategoryID: utils.QueryInt(c, "subcategory_id"),
 		BrandID:       utils.QueryInt(c, "brand_id"),
 		Search:        c.Query("search"),
+		Status:        utils.QueryStringPtr(c, "status"),
+		IsActive:      utils.QueryBool(c, "is_active"),
 	}
 	products, total, err := h.service.AdminGetAll(c.Request.Context(), filters, page, limit)
 	if err != nil {

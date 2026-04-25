@@ -11,6 +11,7 @@ export const tm: Record<string, string> = {
   nav_delivery_zones: 'Eltip bermek zolaklary',
   nav_time_slots: 'Wagt aralyklary',
   nav_admins: 'Administratorlar',
+  nav_not_reviewed_products: 'Gözden geçirilmedik harytlar',
   logout: 'Çykmak',
 
   // Login

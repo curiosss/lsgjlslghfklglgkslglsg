@@ -65,6 +65,7 @@ type ProductFilters struct {
 	IsNew         *bool
 	IsDiscount    *bool
 	Status        *string
+	IsActive      *bool
 }
 
 type CreateProductRequest struct {

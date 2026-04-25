@@ -116,6 +116,11 @@ func (r *ProductRepo) AdminGetAll(ctx context.Context, filters models.ProductFil
 		args = append(args, *filters.Status)
 		argIdx++
 	}
+	if filters.IsActive != nil {
+		where = append(where, fmt.Sprintf("p.is_active = $%d", argIdx))
+		args = append(args, *filters.IsActive)
+		argIdx++
+	}
 
 	whereClause := strings.Join(where, " AND ")
 

@@ -58,3 +58,11 @@ func QueryBool(c *gin.Context, key string) *bool {
 	}
 	return &b
 }
+
+func QueryStringPtr(c *gin.Context, key string) *string {
+	val := c.Query(key)
+	if val == "" {
+		return nil
+	}
+	return &val
+}

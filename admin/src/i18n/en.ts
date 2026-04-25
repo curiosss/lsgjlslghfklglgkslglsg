@@ -11,6 +11,7 @@ export const en: Record<string, string> = {
   nav_delivery_zones: 'Delivery Zones',
   nav_time_slots: 'Time Slots',
   nav_admins: 'Administrators',
+  nav_not_reviewed_products: 'Not reviewed products',
   logout: 'Logout',
 
   // Login
